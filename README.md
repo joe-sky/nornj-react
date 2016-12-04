@@ -1,9 +1,9 @@
-# NornJ-React
+ï»¿# NornJ-React
 React bindings for template engine NornJ
 
-### °²×°
+### å®‰è£…
 
-Ê¹ÓÃnpm°²×°:
+ä½¿ç”¨npmå®‰è£…:
 
 ```sh
 npm install nornj-react
