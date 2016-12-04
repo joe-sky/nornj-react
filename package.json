@@ -1,0 +1,44 @@
+{
+  "name": "nornj-react",
+  "version": "0.4.0-rc.1",
+  "description": "React bindings for template engine NornJ",
+  "main": "src/base.js",
+  "files": [
+    "dist/",
+    "src/",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "gulp test"
+  },
+  "keywords": [
+    "nornj",
+    "nj",
+    "template",
+    "react"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joe-sky/nornj-react.git"
+  },
+  "author": "Joe_Sky <hitomi_doax@sina.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.7.7",
+    "babel-loader": "^6.2.4",
+    "gulp": "^3.9.0",
+    "gulp-eslint": "^3.0.1",
+    "gulp-if": "^2.0.0",
+    "gulp-jasmine": "^2.1.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-rename": "^1.2.2",
+    "jsdom": "^8.1.0",
+    "lodash": "^4.13.1",
+    "nornj": "0.4.0-rc.8",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "webpack": "^1.13.1",
+    "webpack-stream": "^3.2.0",
+    "yargs": "^4.2.0"
+  }
+}
