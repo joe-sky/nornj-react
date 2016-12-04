@@ -4,7 +4,7 @@ var nj = require('nornj');
 
 //注册模板装饰器
 function registerTmpl(name, template) {
-  if (tools.isObject(name)) {
+  if (nj.isObject(name)) {
     template = name.template;
     name = name.name;
   }

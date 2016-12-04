@@ -5,8 +5,8 @@ var njr = require('./core'),
   ReactDOM = require('react-dom');
 
 //渲染内联标签组件
-function renderComponents(data, selector, isAuto) {
-  var tags = getComponents(selector, isAuto),
+function renderTmplTag(data, selector, isAuto) {
+  var tags = getTmplTag(selector, isAuto),
     ret = [];
 
   nj.each(tags, function (tag) {
@@ -20,7 +20,7 @@ function renderComponents(data, selector, isAuto) {
 }
 
 //获取全部内联组件
-function getComponents(selector, isAuto) {
+function getTmplTag(selector, isAuto) {
   if (!selector) {
     selector = 'script[type="text/nornj"]' + (isAuto ? '[autorender]' : '');
   }
@@ -34,7 +34,7 @@ function setInitialData(data) {
 }
 
 module.exports = {
-  renderComponents: renderComponents,
-  getComponents: getComponents,
+  renderTmplTag: renderTmplTag,
+  getTmplTag: getTmplTag,
   setInitialData: setInitialData
 };

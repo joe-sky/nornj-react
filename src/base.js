@@ -3,13 +3,13 @@
 var njr = require('./core'),
   nj = require('nornj'),
   React = require('react'),
-  renderComponents = require('./renderComponents'),
+  renderTmplTag = require('./renderTmplTag'),
   registerTmpl = require('./registerTmpl'),
   docReady = require('./docReady');
 
 njr.registerTmpl = registerTmpl;
 njr.docReady = docReady;
-nj.assign(njr, renderComponents);
+nj.assign(njr, renderTmplTag);
 
 //Set createElement function for NornJ
 nj.config({ createElement: React.createElement });
@@ -20,7 +20,7 @@ if (typeof self !== 'undefined') {
 
   //Initial render templates
   docReady(function () {
-    njr.renderComponents(njr.initialData, null, true);
+    njr.renderTmplTag(njr.initialData, null, true);
   });
 }
 else {

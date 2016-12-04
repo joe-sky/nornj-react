@@ -6,7 +6,7 @@
 	else if(typeof exports === 'object')
 		exports["NornJReact"] = factory(require("nornj"), require("react"), require("react-dom"));
 	else
-		root["NornJReact"] = factory(root["nj"], root["React"], root["ReactDom"]);
+		root["NornJReact"] = factory(root["nj"], root["React"], root["ReactDOM"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_5__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -59,13 +59,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	var njr = __webpack_require__(1),
 	  nj = __webpack_require__(2),
 	  React = __webpack_require__(3),
-	  renderComponents = __webpack_require__(4),
+	  renderTmplTag = __webpack_require__(4),
 	  registerTmpl = __webpack_require__(6),
 	  docReady = __webpack_require__(7);
 
 	njr.registerTmpl = registerTmpl;
 	njr.docReady = docReady;
-	nj.assign(njr, renderComponents);
+	nj.assign(njr, renderTmplTag);
 
 	//Set createElement function for NornJ
 	nj.config({ createElement: React.createElement });
@@ -76,7 +76,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  //Initial render templates
 	  docReady(function () {
-	    njr.renderComponents(njr.initialData, null, true);
+	    njr.renderTmplTag(njr.initialData, null, true);
 	  });
 	}
 	else {
@@ -120,8 +120,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ReactDOM = __webpack_require__(5);
 
 	//渲染内联标签组件
-	function renderComponents(data, selector, isAuto) {
-	  var tags = getComponents(selector, isAuto),
+	function renderTmplTag(data, selector, isAuto) {
+	  var tags = getTmplTag(selector, isAuto),
 	    ret = [];
 
 	  nj.each(tags, function (tag) {
@@ -135,7 +135,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	//获取全部内联组件
-	function getComponents(selector, isAuto) {
+	function getTmplTag(selector, isAuto) {
 	  if (!selector) {
 	    selector = 'script[type="text/nornj"]' + (isAuto ? '[autorender]' : '');
 	  }
@@ -149,8 +149,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	module.exports = {
-	  renderComponents: renderComponents,
-	  getComponents: getComponents,
+	  renderTmplTag: renderTmplTag,
+	  getTmplTag: getTmplTag,
 	  setInitialData: setInitialData
 	};
 
@@ -170,7 +170,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	//注册模板装饰器
 	function registerTmpl(name, template) {
-	  if (tools.isObject(name)) {
+	  if (nj.isObject(name)) {
 	    template = name.template;
 	    name = name.name;
 	  }
