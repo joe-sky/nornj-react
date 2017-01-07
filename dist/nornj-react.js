@@ -68,7 +68,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	nj.assign(njr, renderTmplTag);
 
 	//Set createElement function for NornJ
-	nj.config({ createElement: React.createElement });
+	nj.config({
+	  createElement: React.createElement,
+	  outputH: true
+	});
 
 	var global;
 	if (typeof self !== 'undefined') {
