@@ -17,9 +17,9 @@ nj.config({
   outputH: true
 });
 
-var global;
+var _global;
 if (typeof self !== 'undefined') {
-  global = self;
+  _global = self;
 
   //Initial render templates
   docReady(function () {
@@ -27,7 +27,7 @@ if (typeof self !== 'undefined') {
   });
 }
 else {
-  global = this;
+  _global = global;
 }
 
-module.exports = global.NornJReact = global.njr = njr;
+module.exports = _global.NornJReact = _global.njr = njr;
