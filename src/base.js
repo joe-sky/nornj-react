@@ -14,7 +14,11 @@ nj.assign(njr, renderTmplTag);
 //Set createElement function for NornJ
 nj.config({
   createElement: React.createElement,
-  outputH: true
+  outputH: true,
+  delimiters: {
+    start: '{',
+    end: '}'
+  }
 });
 
 var _global;
