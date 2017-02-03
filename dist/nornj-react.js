@@ -54,7 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
 
 	var njr = __webpack_require__(1),
 	  nj = __webpack_require__(2),
@@ -70,12 +70,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	//Set createElement function for NornJ
 	nj.config({
 	  createElement: React.createElement,
-	  outputH: true
+	  outputH: true,
+	  delimiters: {
+	    start: '{',
+	    end: '}'
+	  }
 	});
 
-	var global;
+	//Additional tag expressions
+	__webpack_require__(8);
+
+	var _global;
 	if (typeof self !== 'undefined') {
-	  global = self;
+	  _global = self;
 
 	  //Initial render templates
 	  docReady(function () {
@@ -83,10 +90,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	}
 	else {
-	  global = this;
+	  _global = global;
 	}
 
-	module.exports = global.NornJReact = global.njr = njr;
+	module.exports = _global.NornJReact = _global.njr = njr;
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 1 */
@@ -208,6 +216,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    self.attachEvent("onload", callback);
 	  }
 	};
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var nj = __webpack_require__(2);
+
+	nj.registerExpr('brace', function(options) {
+	  return '{' + options.result() + '}';
+	}, { newContext: false, useString: false });
 
 /***/ }
 /******/ ])

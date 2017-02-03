@@ -21,6 +21,9 @@ nj.config({
   }
 });
 
+//Additional tag expressions
+require('./expression');
+
 var _global;
 if (typeof self !== 'undefined') {
   _global = self;
