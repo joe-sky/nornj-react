@@ -73,7 +73,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  outputH: true,
 	  delimiters: {
 	    start: '{',
-	    end: '}'
+	    end: '}',
+	    comment: ''
 	  }
 	});
 

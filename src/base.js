@@ -17,7 +17,8 @@ nj.config({
   outputH: true,
   delimiters: {
     start: '{',
-    end: '}'
+    end: '}',
+    comment: ''
   }
 });
 
