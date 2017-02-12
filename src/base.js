@@ -1,15 +1,17 @@
-﻿'use strict';
-
-var njr = require('./core'),
+﻿const njr = require('./core'),
   nj = require('nornj'),
   React = require('react'),
   renderTmplTag = require('./renderTmplTag'),
-  registerTmpl = require('./registerTmpl'),
-  docReady = require('./docReady');
+  registerTmpl = require('./registerTmpl').default,
+  docReady = require('./docReady').default;
 
-njr.registerTmpl = registerTmpl;
-njr.docReady = docReady;
-nj.assign(njr, renderTmplTag);
+//Additional tag expressions
+require('./expression');
+
+nj.assign(njr, {
+  registerTmpl,
+  docReady
+}, renderTmplTag);
 
 //Set createElement function for NornJ
 nj.config({
@@ -22,19 +24,15 @@ nj.config({
   }
 });
 
-//Additional tag expressions
-require('./expression');
-
-var _global;
+let _global;
 if (typeof self !== 'undefined') {
   _global = self;
 
   //Initial render templates
-  docReady(function () {
-    njr.renderTmplTag(njr.initialData, null, true);
+  docReady(() => {
+    njr.renderTmplTag(njr.initialData, null, true)
   });
-}
-else {
+} else {
   _global = global;
 }
 

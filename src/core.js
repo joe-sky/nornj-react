@@ -1,7 +1,3 @@
-﻿'use strict';
-
-var njr = {
+﻿module.exports = {
   initialData: null
 };
-
-module.exports = njr;

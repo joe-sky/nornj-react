@@ -1,22 +1,22 @@
-﻿var gulp = require('gulp'),
-  webpack = require('webpack'),
-  webpackStream = require('webpack-stream'),
-  jasmine = require('gulp-jasmine'),
-  rename = require('gulp-rename'),
-  gulpif = require('gulp-if'),
-  eslint = require('gulp-eslint'),
-  notify = require('gulp-notify'),
-  argv = require('yargs').argv;
+﻿import gulp from 'gulp';
+import babel from 'gulp-babel';
+import webpack from 'webpack';
+import webpackStream from 'webpack-stream';
+import jasmine from 'gulp-jasmine';
+import rename from 'gulp-rename';
+import gulpIf from 'gulp-if';
+import eslint from 'gulp-eslint';
+import notify from 'gulp-notify';
+import { argv } from 'yargs';
+import env from 'gulp-env';
 
 //Handle error
 function handlebuildError() {
-  var args = Array.prototype.slice.call(arguments);
-
   // Send error to notification center with gulp-notify
   notify.onError({
     title: "Compile Error",
     message: "<%= error.message %>"
-  }).apply(this, args);
+  }).apply(this, arguments);
 
   // Keep gulp from hanging on this task
   this.emit('end');
@@ -60,13 +60,17 @@ gulp.task('build', function () {
         unsafe_comps: true,
         screw_ie8: true,
         warnings: false
-      }
+      },
+      sourceMap: true
     }));
   }
 
   return gulp.src('./src/base.js')
+    .pipe(env.set({
+      BABEL_ENV: 'webpack'
+    }))
     .pipe(webpackStream({
-      devtool: argv.p ? 'source-map' : null,
+      devtool: argv.p ? 'source-map' : false,
       watch: argv.w ? true : false,
       externals: webpackExternals,
       output: {
@@ -74,33 +78,41 @@ gulp.task('build', function () {
         library: 'NornJReact',
         libraryTarget: 'umd'
       },
-      plugins: plugins
-    }))
+      module: {
+        rules: [{
+          test: /\.js$/,
+          use: ['babel-loader'],
+          exclude: /node_modules/
+        }]
+      },
+      plugins
+    }, webpack))
     .on('error', handlebuildError)
     .pipe(gulp.dest('./dist'));
 });
 
+//Convert es6 code to es5 from src to lib
+gulp.task("lib", () => gulp.src('./src/**/*.js')
+  .pipe(env.set({
+    BABEL_ENV: 'development'
+  }))
+  .pipe(babel())
+  .pipe(gulp.dest('./lib'))
+);
+
 //Unit testing
-gulp.task("test", function () {
-  return gulp.src(["./test/**/**Spec.js"])
-    .pipe(jasmine());
-});
+gulp.task("test", () => gulp.src(["./test/**/**Spec.js"])
+  .pipe(jasmine({
+    includeStackTrace: true
+  }))
+);
 
 //Run eslint
-gulp.task('eslint', function () {
-  return gulp.src(['./src/**/*.js'])
-    .pipe(eslint({
-      "rules": {
-        "camelcase": [2, { "properties": "always" }],
-        "comma-dangle": [2, "never"],
-        "semi": [2, "always"],
-        "quotes": [2, "single"],
-        "strict": [2, "global"]
-      }
-    }))
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
-});
+gulp.task('eslint', () => gulp.src(['./src/**/*.js'])
+  .pipe(eslint())
+  .pipe(eslint.format())
+  .pipe(eslint.failAfterError())
+);
 
 //Default task
-gulp.task('default', ['build']);
+gulp.task('default', ['build'], () => gulp.start('lib'));

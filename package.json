@@ -1,16 +1,14 @@
 {
   "name": "nornj-react",
-  "version": "0.4.1-rc.2",
+  "version": "0.4.1-rc.6",
   "description": "React bindings for template engine NornJ",
-  "main": "src/base.js",
+  "main": "lib/base.js",
   "files": [
     "dist/",
+    "lib/",
     "src/",
     "LICENSE"
   ],
-  "scripts": {
-    "test": "gulp test"
-  },
   "keywords": [
     "nornj",
     "nj",
@@ -25,8 +23,14 @@
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.7.7",
+    "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-1": "^6.22.0",
+    "babel-register": "^6.22.0",
     "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.2",
+    "gulp-env": "^0.4.0",
     "gulp-eslint": "^3.0.1",
     "gulp-if": "^2.0.0",
     "gulp-jasmine": "^2.1.0",
@@ -37,7 +41,7 @@
     "nornj": "0.4.0-rc.8",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
-    "webpack": "^1.13.1",
+    "webpack": "^2.2.1",
     "webpack-stream": "^3.2.0",
     "yargs": "^4.2.0"
   }

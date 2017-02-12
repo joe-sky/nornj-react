@@ -1,7 +1,5 @@
-﻿'use strict';
-
-module.exports = function (callback) {
-  var doc = document;
+﻿export default function (callback) {
+  const doc = document;
   if (doc.addEventListener) {
     doc.addEventListener("DOMContentLoaded", callback, false);
   }
