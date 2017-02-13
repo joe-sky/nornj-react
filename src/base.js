@@ -1,17 +1,14 @@
-﻿const njr = require('./core'),
-  nj = require('nornj'),
-  React = require('react'),
-  renderTmplTag = require('./renderTmplTag'),
-  registerTmpl = require('./registerTmpl').default,
-  docReady = require('./docReady').default;
-
-//Additional tag expressions
-require('./expression');
+﻿import njr from './core';
+import nj from 'nornj';
+import React from 'react';
+import registerTmpl from './registerTmpl';
+import docReady from './docReady';
+import './expression';  //Additional tag expressions
 
 nj.assign(njr, {
   registerTmpl,
   docReady
-}, renderTmplTag);
+});
 
 //Set createElement function for NornJ
 nj.config({
@@ -35,5 +32,11 @@ if (typeof self !== 'undefined') {
 } else {
   _global = global;
 }
+_global.NornJReact = _global.njr = njr;
 
-module.exports = _global.NornJReact = _global.njr = njr;
+export * from './renderTmplTag';
+export {
+  registerTmpl,
+  docReady
+};
+export default njr;

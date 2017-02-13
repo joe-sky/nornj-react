@@ -30,3 +30,9 @@ export function getTmplTag(selector, isAuto) {
 export function setInitialData(data) {
   njr.initialData = data;
 }
+
+nj.assign(njr, {
+  renderTmplTag,
+  getTmplTag,
+  setInitialData
+});
