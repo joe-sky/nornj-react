@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 
 //渲染内联标签组件
 export function renderTmplTag(data, selector, isAuto) {
-  var tags = getTmplTag(selector, isAuto),
+  const tags = getTmplTag(selector, isAuto),
     ret = [];
 
   nj.each(tags, (tag) => {
