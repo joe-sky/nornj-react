@@ -3,7 +3,7 @@ import nj from 'nornj';
 import React from 'react';
 import registerTmpl from './registerTmpl';
 import docReady from './docReady';
-import './expression';  //Additional tag expressions
+import './extension';  //Additional extension tags
 
 nj.assign(njr, {
   registerTmpl,
@@ -34,9 +34,10 @@ if (typeof self !== 'undefined') {
 }
 _global.NornJReact = _global.njr = njr;
 
-export * from './renderTmplTag';
 export {
-  registerTmpl,
-  docReady
+  renderTmplTag
+} from './renderTmplTag';
+export {
+  registerTmpl
 };
 export default njr;

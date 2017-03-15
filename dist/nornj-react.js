@@ -114,7 +114,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_nornj___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_nornj__);
 
 
-__WEBPACK_IMPORTED_MODULE_0_nornj___default.a.registerExpr('brace', function (options) {
+__WEBPACK_IMPORTED_MODULE_0_nornj___default.a.registerExtension('brace', function (options) {
   return '{' + options.result() + '}';
 }, {
   newContext: false,
@@ -162,8 +162,8 @@ function registerTmpl(name, template) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
 /* harmony export (immutable) */ __webpack_exports__["a"] = renderTmplTag;
-/* harmony export (immutable) */ __webpack_exports__["b"] = getTmplTag;
-/* harmony export (immutable) */ __webpack_exports__["c"] = setInitialData;
+/* unused harmony export getTmplTag */
+/* unused harmony export setInitialData */
 
 
 
@@ -255,19 +255,16 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__registerTmpl__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__docReady__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__expression__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__extension__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__renderTmplTag__ = __webpack_require__(5);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "renderTmplTag", function() { return __WEBPACK_IMPORTED_MODULE_6__renderTmplTag__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "getTmplTag", function() { return __WEBPACK_IMPORTED_MODULE_6__renderTmplTag__["b"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "setInitialData", function() { return __WEBPACK_IMPORTED_MODULE_6__renderTmplTag__["c"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "renderTmplTag", function() { return __WEBPACK_IMPORTED_MODULE_6__renderTmplTag__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "registerTmpl", function() { return __WEBPACK_IMPORTED_MODULE_3__registerTmpl__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "docReady", function() { return __WEBPACK_IMPORTED_MODULE_4__docReady__["a"]; });
 
 
 
 
 
- //Additional tag expressions
+ //Additional extension tags
 
 __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.assign(__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */], {
   registerTmpl: __WEBPACK_IMPORTED_MODULE_3__registerTmpl__["a" /* default */],
