@@ -26,9 +26,10 @@ if (typeof self !== 'undefined') {
   _global = self;
 
   //Initial render templates
-  docReady(() => {
-    njr.renderTmplTag(njr.initialData, null, true)
-  });
+  docReady(() => njr.renderTmplTag({
+    data: njr.initialData,
+    isAuto: true
+  }));
 } else {
   _global = global;
 }

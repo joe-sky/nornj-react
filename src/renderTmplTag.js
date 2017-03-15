@@ -2,28 +2,24 @@
 import nj from 'nornj';
 import ReactDOM from 'react-dom';
 
-//渲染内联标签组件
-export function renderTmplTag(data, selector, isAuto) {
-  const tags = getTmplTag(selector, isAuto),
-    ret = [];
-
-  nj.each(tags, (tag) => {
-    const tmpl = nj.compileH(tag.innerHTML, tag.id),
-      parentNode = tag.parentNode;
-
-    ret.push(ReactDOM.render(tmpl(data), parentNode));
-  }, false, true);
-
-  return ret;
-}
-
-//获取全部内联组件
-export function getTmplTag(selector, isAuto) {
+//渲染模板标签
+export function renderTmplTag(options) {
+  let { data, selector, target, isAuto } = options;
   if (!selector) {
-    selector = 'script[type="text/nornj"]' + (isAuto ? '[autorender]' : '');
+    selector = 'script[type="text/nornj"]' + (isAuto ? '[data-auto]' : '');
   }
 
-  return document.querySelectorAll(selector);
+  const tags = document.querySelectorAll(selector),
+    ret = [];
+
+  nj.each(tags, tag => {
+    const tmplFn = nj.compileH(tag.innerHTML, tag.id),
+      targetNode = target ? target : tag.parentNode;
+
+    ret.push(ReactDOM.render(nj.isArray(data) ? tmplFn.apply(null, data) : tmplFn(data), targetNode));
+  }, null, true);
+
+  return ret;
 }
 
 //Set initial data for inline component
@@ -33,6 +29,5 @@ export function setInitialData(data) {
 
 nj.assign(njr, {
   renderTmplTag,
-  getTmplTag,
   setInitialData
 });

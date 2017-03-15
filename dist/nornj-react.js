@@ -11,41 +11,41 @@
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -56,7 +56,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 			});
 /******/ 		}
 /******/ 	};
-
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -65,13 +65,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-
+/******/
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
@@ -162,34 +162,33 @@ function registerTmpl(name, template) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
 /* harmony export (immutable) */ __webpack_exports__["a"] = renderTmplTag;
-/* unused harmony export getTmplTag */
 /* unused harmony export setInitialData */
 
 
 
 
-//渲染内联标签组件
-function renderTmplTag(data, selector, isAuto) {
-  var tags = getTmplTag(selector, isAuto),
+//渲染模板标签
+function renderTmplTag(options) {
+  var data = options.data,
+      selector = options.selector,
+      target = options.target,
+      isAuto = options.isAuto;
+
+  if (!selector) {
+    selector = 'script[type="text/nornj"]' + (isAuto ? '[data-auto]' : '');
+  }
+
+  var tags = document.querySelectorAll(selector),
       ret = [];
 
   __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.each(tags, function (tag) {
-    var tmpl = __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.compileH(tag.innerHTML, tag.id),
-        parentNode = tag.parentNode;
+    var tmplFn = __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.compileH(tag.innerHTML, tag.id),
+        targetNode = target ? target : tag.parentNode;
 
-    ret.push(__WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(tmpl(data), parentNode));
-  }, false, true);
+    ret.push(__WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_1_nornj___default.a.isArray(data) ? tmplFn.apply(null, data) : tmplFn(data), targetNode));
+  }, null, true);
 
   return ret;
-}
-
-//获取全部内联组件
-function getTmplTag(selector, isAuto) {
-  if (!selector) {
-    selector = 'script[type="text/nornj"]' + (isAuto ? '[autorender]' : '');
-  }
-
-  return document.querySelectorAll(selector);
 }
 
 //Set initial data for inline component
@@ -199,7 +198,6 @@ function setInitialData(data) {
 
 __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.assign(__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */], {
   renderTmplTag: renderTmplTag,
-  getTmplTag: getTmplTag,
   setInitialData: setInitialData
 });
 
@@ -288,7 +286,10 @@ if (typeof self !== 'undefined') {
 
   //Initial render templates
   __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__docReady__["a" /* default */])(function () {
-    __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].renderTmplTag(__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].initialData, null, true);
+    return __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].renderTmplTag({
+      data: __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].initialData,
+      isAuto: true
+    });
   });
 } else {
   _global = global;
