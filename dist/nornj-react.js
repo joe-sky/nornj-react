@@ -168,7 +168,8 @@ function registerTmpl(name, template) {
 
 
 //渲染模板标签
-function renderTmplTag(options) {
+function renderTmplTag() {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var data = options.data,
       selector = options.selector,
       target = options.target,
@@ -182,8 +183,17 @@ function renderTmplTag(options) {
       ret = [];
 
   __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.each(tags, function (tag) {
-    var tmplFn = __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.compileH(tag.innerHTML, tag.id),
-        targetNode = target ? target : tag.parentNode;
+    var tmplFn = __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.compileH(tag.innerHTML, tag.id);
+    var targetNode = void 0;
+    if (target) {
+      if (__WEBPACK_IMPORTED_MODULE_1_nornj___default.a.isString(target)) {
+        targetNode = document.querySelector(target);
+      } else {
+        targetNode = target;
+      }
+    } else {
+      targetNode = tag.parentNode;
+    }
 
     ret.push(__WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_1_nornj___default.a.isArray(data) ? tmplFn.apply(null, data) : tmplFn(data), targetNode));
   }, null, true);

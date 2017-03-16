@@ -3,7 +3,7 @@ import nj from 'nornj';
 import ReactDOM from 'react-dom';
 
 //渲染模板标签
-export function renderTmplTag(options) {
+export function renderTmplTag(options = {}) {
   let { data, selector, target, isAuto } = options;
   if (!selector) {
     selector = 'script[type="text/nornj"]' + (isAuto ? '[data-auto]' : '');
@@ -13,8 +13,17 @@ export function renderTmplTag(options) {
     ret = [];
 
   nj.each(tags, tag => {
-    const tmplFn = nj.compileH(tag.innerHTML, tag.id),
-      targetNode = target ? target : tag.parentNode;
+    const tmplFn = nj.compileH(tag.innerHTML, tag.id);
+    let targetNode;
+    if (target) {
+      if (nj.isString(target)) {
+        targetNode = document.querySelector(target);
+      } else {
+        targetNode = target;
+      }
+    } else {
+      targetNode = tag.parentNode;
+    }
 
     ret.push(ReactDOM.render(nj.isArray(data) ? tmplFn.apply(null, data) : tmplFn(data), targetNode));
   }, null, true);
