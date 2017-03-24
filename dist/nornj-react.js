@@ -132,10 +132,11 @@ __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.registerExtension('brace', functio
 
 
 //注册模板装饰器
-function registerTmpl(name, template) {
+function registerTmpl(name, template, cache) {
   if (__WEBPACK_IMPORTED_MODULE_0_nornj___default.a.isObject(name)) {
     template = name.template;
     name = name.name;
+    cache = name.cache;
   }
 
   return function (target) {
@@ -146,7 +147,7 @@ function registerTmpl(name, template) {
 
     //创建模板函数
     if (template) {
-      target.prototype.template = __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.compileH(template, name);
+      target.prototype.template = __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.compileH(template, cache ? name : null);
     }
   };
 }
