@@ -1,13 +1,14 @@
 {
   "name": "nornj-react",
-  "version": "0.4.1-rc.12",
+  "version": "0.4.1",
   "description": "React bindings for template engine NornJ",
   "main": "lib/base.js",
   "files": [
     "dist/",
     "lib/",
     "src/",
-    "LICENSE"
+    "LICENSE",
+    "README.md"
   ],
   "keywords": [
     "nornj",
@@ -38,7 +39,7 @@
     "gulp-rename": "^1.2.2",
     "jsdom": "^8.1.0",
     "lodash": "^4.13.1",
-    "nornj": "0.4.0-rc.8",
+    "nornj": "^0.4.1",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "webpack": "^2.2.1",
