@@ -117,6 +117,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.registerExtension('brace', function (options) {
   return '{' + options.result() + '}';
 }, {
+  onlyGlobal: true,
   newContext: false,
   useString: false
 });
@@ -135,8 +136,8 @@ __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.registerExtension('brace', functio
 function registerTmpl(name, template, cache) {
   if (__WEBPACK_IMPORTED_MODULE_0_nornj___default.a.isObject(name)) {
     template = name.template;
-    name = name.name;
     cache = name.cache;
+    name = name.name;
   }
 
   return function (target) {
@@ -145,10 +146,17 @@ function registerTmpl(name, template, cache) {
       __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.registerComponent(name, target);
     }
 
+    //从标签的innerHTML获取模板
+    if (/^#{1}/.test(template)) {
+      template = document.querySelector(template).innerHTML;
+    }
+
     //创建模板函数
     if (template) {
       target.prototype.template = __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.compileH(template, cache ? name : null);
     }
+
+    return target;
   };
 }
 
