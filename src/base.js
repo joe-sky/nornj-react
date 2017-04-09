@@ -3,7 +3,6 @@ import nj from 'nornj';
 import React from 'react';
 import registerTmpl from './registerTmpl';
 import docReady from './docReady';
-import './extension';  //Additional extension tags
 
 nj.assign(njr, {
   registerTmpl,
