@@ -45,7 +45,7 @@ const webpackExternals = {
 };
 
 //Build js
-gulp.task('build', function () {
+gulp.task('build', function() {
   var libName = 'nornj-react.js';
   if (argv.p) {
     libName = 'nornj-react.min.js';
@@ -92,13 +92,22 @@ gulp.task('build', function () {
 });
 
 //Convert es6 code to es5 from src to lib
-gulp.task("lib", () => gulp.src('./src/**/*.js')
-  .pipe(env.set({
-    BABEL_ENV: 'development'
-  }))
-  .pipe(babel())
-  .pipe(gulp.dest('./lib'))
-);
+gulp.task("lib", () => {
+  gulp.src('./src/**/*.js')
+    .pipe(env.set({
+      BABEL_ENV: 'development'
+    }))
+    .pipe(babel())
+    .pipe(gulp.dest('./lib'));
+
+  gulp.src('./native/baseNative.js')
+    .pipe(env.set({
+      BABEL_ENV: 'development'
+    }))
+    .pipe(babel())
+    .pipe(rename('index.js'))
+    .pipe(gulp.dest('./native'));
+});
 
 //Unit testing
 gulp.task("test", () => gulp.src(["./test/**/**Spec.js"])
