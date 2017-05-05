@@ -100,7 +100,15 @@ gulp.task("lib", () => {
     .pipe(babel())
     .pipe(gulp.dest('./lib'));
 
-  gulp.src('./native/baseNative.js')
+  gulp.src('./mobx/base.js')
+    .pipe(env.set({
+      BABEL_ENV: 'development'
+    }))
+    .pipe(babel())
+    .pipe(rename('index.js'))
+    .pipe(gulp.dest('./mobx'));
+
+  gulp.src('./native/base.js')
     .pipe(env.set({
       BABEL_ENV: 'development'
     }))

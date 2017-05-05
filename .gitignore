@@ -1,3 +1,4 @@
 /node_modules/
 /lib/
+/mobx/index.js
 /native/index.js
