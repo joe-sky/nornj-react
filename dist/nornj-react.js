@@ -116,10 +116,19 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 
 
 //注册模板装饰器
-function registerTmpl(name, template, cache) {
+function registerTmpl(name, template, cache, components) {
   if (__WEBPACK_IMPORTED_MODULE_0_nornj___default.a.isObject(name)) {
     template = name.template;
     cache = name.cache;
+
+    //组件名称转小写
+    if (name.components) {
+      components = {};
+      __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.each(name.components, function (v, k) {
+        components[k.toLowerCase()] = v;
+      });
+    }
+
     name = name.name;
   }
 
@@ -136,7 +145,7 @@ function registerTmpl(name, template, cache) {
 
     //创建模板函数
     if (template) {
-      target.prototype.template = __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.compileH(template, cache ? name : null);
+      target.prototype.template = __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.compileH(template, cache ? name : null, null, null, null, components);
     }
 
     return target;

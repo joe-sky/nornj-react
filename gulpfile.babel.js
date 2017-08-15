@@ -116,6 +116,14 @@ gulp.task("lib", () => {
     .pipe(rename('index.js'))
     .pipe(gulp.dest('./native'));
 
+  gulp.src('./redux/base.js')
+    .pipe(env.set({
+      BABEL_ENV: 'development'
+    }))
+    .pipe(babel())
+    .pipe(rename('index.js'))
+    .pipe(gulp.dest('./redux'));
+
   gulp.src('./router/base.js')
     .pipe(env.set({
       BABEL_ENV: 'development'
