@@ -131,6 +131,14 @@ gulp.task("lib", () => {
     .pipe(babel())
     .pipe(rename('index.js'))
     .pipe(gulp.dest('./router'));
+
+  gulp.src('./server/base.js')
+    .pipe(env.set({
+      BABEL_ENV: 'development'
+    }))
+    .pipe(babel())
+    .pipe(rename('index.js'))
+    .pipe(gulp.dest('./server'));
 });
 
 //Unit testing

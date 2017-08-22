@@ -3,3 +3,5 @@
 /mobx/index.js
 /native/index.js
 /router/index.js
+/redux/index.js
+/server/index.js
