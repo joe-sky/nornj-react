@@ -5,15 +5,7 @@ export default function registerTmpl(name, template, cache, components) {
   if (nj.isObject(name)) {
     template = name.template;
     cache = name.cache;
-
-    //组件名称转小写
-    if(name.components) {
-      components = {};
-      nj.each(name.components, (v, k) => {
-        components[k.toLowerCase()] = v;
-      });
-    }
-    
+    components = name.components;
     name = name.name;
   }
 
@@ -30,7 +22,7 @@ export default function registerTmpl(name, template, cache, components) {
 
     //创建模板函数
     if (template) {
-      target.prototype.template = nj.compileH(template, cache ? name : null, null, null, null, components);
+      target.prototype.template = nj.compileH(template, cache ? name : null).bind({ _njIcp: nj.isArray(components) ? components : [components] });
     }
 
     return target;
