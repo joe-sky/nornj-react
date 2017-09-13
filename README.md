@@ -22,18 +22,19 @@ import { registerTmpl } from 'nornj-react';
 import styled from 'styled-components';
 
 @registerTmpl({
-  name: 'TestComponent',  //可传入组件名，相当于调用了nj.registerComponent注册组件，可选参数
-  components: {           //可传入局部组件，如本例配合styled-components组件使用，可选参数
+  name: 'TestComponent',  //可传入组件名，相当于调用了nj.registerComponent注册组件
+  components: {           //可传入局部组件，如本例配合styled-components组件使用
     Container: styled.div `
       background-color: #fff;
     `
   },
-  template: `             <!--可传入模板，纯字符串和以nj为前置标签的模板字符串都可以，可选参数-->
+  template: `             <!--可传入模板，纯字符串和以nj为前置标签的模板字符串都可以-->
     <Container id=test1>
       this the test demo{no}.
       <i>test{no}</i>
     </Container>
-  `
+  `,
+  cache: false            //可指定是否开启缓存，缓存key为name参数，默认为false
 })
 class TestComponent extends Component {
   render() {
