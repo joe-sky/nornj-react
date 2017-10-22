@@ -6,4 +6,4 @@
   else {
     self.attachEvent("onload", callback);
   }
-};
+}
