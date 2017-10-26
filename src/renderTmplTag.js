@@ -15,6 +15,10 @@ export function renderTmplTag(options = {}) {
   nj.each(tags, tag => {
     const tmplFn = nj.compileH(tag.innerHTML, tag.id);
     let targetNode;
+
+    if (target == null) {
+      target = tag.getAttribute('data-target');
+    }
     if (target) {
       if (nj.isString(target)) {
         targetNode = document.querySelector(target);

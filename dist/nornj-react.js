@@ -267,6 +267,10 @@ function renderTmplTag() {
   __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.each(tags, function (tag) {
     var tmplFn = __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.compileH(tag.innerHTML, tag.id);
     var targetNode = void 0;
+
+    if (target == null) {
+      target = tag.getAttribute('data-target');
+    }
     if (target) {
       if (__WEBPACK_IMPORTED_MODULE_1_nornj___default.a.isString(target)) {
         targetNode = document.querySelector(target);
