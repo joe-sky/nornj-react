@@ -27,6 +27,7 @@ if (typeof self !== 'undefined') {
   //Initial render templates
   docReady(() => njr.renderTmplTag({
     data: njr.initialData,
+    delimiters: njr.initialDelimiters,
     isAuto: true
   }));
 } else {

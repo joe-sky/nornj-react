@@ -85,7 +85,8 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
-  initialData: null
+  initialData: null,
+  initialDelimiters: null
 });
 
 /***/ }),
@@ -134,6 +135,7 @@ if (typeof self !== 'undefined') {
   Object(__WEBPACK_IMPORTED_MODULE_4__docReady__["a" /* default */])(function () {
     return __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].renderTmplTag({
       data: __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].initialData,
+      delimiters: __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].initialDelimiters,
       isAuto: true
     });
   });
@@ -240,6 +242,7 @@ function registerTmpl(name, template, cache, components) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = renderTmplTag;
 /* unused harmony export setInitialData */
+/* unused harmony export setInitialDelimiters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nornj__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nornj___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_nornj__);
@@ -255,7 +258,8 @@ function renderTmplTag() {
   var data = options.data,
       selector = options.selector,
       target = options.target,
-      isAuto = options.isAuto;
+      isAuto = options.isAuto,
+      delimiters = options.delimiters;
 
   if (!selector) {
     selector = 'script[type="text/nornj"]' + (isAuto ? '[data-auto]' : '');
@@ -265,7 +269,7 @@ function renderTmplTag() {
       ret = [];
 
   __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.each(tags, function (tag) {
-    var tmplFn = __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.compileH(tag.innerHTML, tag.id);
+    var tmplFn = __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.compileH(tag.innerHTML, tag.id, null, delimiters);
     var targetNode = void 0;
 
     if (target == null) {
@@ -292,9 +296,14 @@ function setInitialData(data) {
   __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].initialData = data;
 }
 
+function setInitialDelimiters(delimiters) {
+  __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].initialDelimiters = delimiters;
+}
+
 __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.assign(__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */], {
   renderTmplTag: renderTmplTag,
-  setInitialData: setInitialData
+  setInitialData: setInitialData,
+  setInitialDelimiters: setInitialDelimiters
 });
 
 /***/ }),

@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 
 //渲染模板标签
 export function renderTmplTag(options = {}) {
-  let { data, selector, target, isAuto } = options;
+  let { data, selector, target, isAuto, delimiters } = options;
   if (!selector) {
     selector = 'script[type="text/nornj"]' + (isAuto ? '[data-auto]' : '');
   }
@@ -13,7 +13,7 @@ export function renderTmplTag(options = {}) {
     ret = [];
 
   nj.each(tags, tag => {
-    const tmplFn = nj.compileH(tag.innerHTML, tag.id);
+    const tmplFn = nj.compileH(tag.innerHTML, tag.id, null, delimiters);
     let targetNode;
 
     if (target == null) {
@@ -40,7 +40,12 @@ export function setInitialData(data) {
   njr.initialData = data;
 }
 
+export function setInitialDelimiters(delimiters) {
+  njr.initialDelimiters = delimiters;
+}
+
 nj.assign(njr, {
   renderTmplTag,
-  setInitialData
+  setInitialData,
+  setInitialDelimiters
 });
