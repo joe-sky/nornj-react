@@ -1,8 +1,18 @@
-import nj, { registerExtension } from 'nornj';
+import nj, { registerFilter, registerExtension } from 'nornj';
 import extensionConfigs from '../extensionConfig';
 import { capitalize } from '../../lib/utils';
 
-function _setOnChange(options, valueName, storeName, action) {
+registerFilter('options:', (val, opts) => {
+  if (val == null) {
+    return val;
+  }
+  return {
+    val,
+    _njMobxModelOpts: opts
+  };
+});
+
+function _setOnChange(options, value, action, opts) {
   switch (options.parentType.toLowerCase()) {
     case 'input':
     case 'select':
@@ -11,26 +21,26 @@ function _setOnChange(options, valueName, storeName, action) {
     case 'ant-textarea':
     case 'ant-input.textarea':
       {
-        options.exProps.value = options.context.getData(storeName)[valueName];
+        options.exProps.value = value.val;
         options.exProps.onChange = e => {
-          const store = options.context.getData(storeName);
           if (action) {
-            store[nj.isString(action) ? action : `set${capitalize(valueName)}`](e.target.value);
+            value._njCtx[nj.isString(action) ? action : `set${capitalize(value.prop)}`](e.target.value);
           } else {
-            store[valueName] = e.target.value;
+            value._njCtx[value.prop] = e.target.value;
           }
         };
         break;
       }
     case 'ant-select':
+    case 'el-input':
+    case 'el-select':
       {
-        options.exProps.value = options.context.getData(storeName)[valueName];
+        options.exProps.value = value.val;
         options.exProps.onChange = v => {
-          const store = options.context.getData(storeName);
           if (action) {
-            store[nj.isString(action) ? action : `set${capitalize(valueName)}`](v);
+            value._njCtx[nj.isString(action) ? action : `set${capitalize(value.prop)}`](v);
           } else {
-            store[valueName] = v;
+            value._njCtx[value.prop] = v;
           }
         };
         break;
@@ -40,36 +50,38 @@ function _setOnChange(options, valueName, storeName, action) {
 
 registerExtension('mobx-model', options => {
   const ret = options.result();
-  let valueName = ret,
-    storeName = '$store',
-    action = false;
-  if (nj.isObject(ret)) {
-    valueName = ret.value;
-    if (ret.store != null) {
-      storeName = ret.store;
-    }
-    if (ret.action != null) {
-      action = ret.action;
+  if (ret == null) {
+    return ret;
+  }
+
+  let value = ret,
+    action = false,
+    opts = ret._njMobxModelOpts;
+  if (opts) {
+    value = ret.val;
+    if (opts.action != null) {
+      action = opts.action;
     }
   }
 
-  _setOnChange(options, valueName, storeName, action);
+  _setOnChange(options, value, action, opts);
 }, extensionConfigs['mobx-model']);
 
 registerExtension('mst-model', options => {
   const ret = options.result();
-  let valueName = ret,
-    storeName = '$store',
-    action = true;
-  if (nj.isObject(ret)) {
-    valueName = ret.value;
-    if (ret.store != null) {
-      storeName = ret.store;
-    }
-    if (ret.action != null) {
-      action = ret.action;
+  if (ret == null) {
+    return ret;
+  }
+
+  let value = ret,
+    action = true,
+    opts = ret._njMobxModelOpts;
+  if (opts) {
+    value = ret.val;
+    if (opts.action != null) {
+      action = opts.action;
     }
   }
 
-  _setOnChange(options, valueName, storeName, action);
+  _setOnChange(options, value, action, opts);
 }, extensionConfigs['mst-model']);
