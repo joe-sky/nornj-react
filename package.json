@@ -17,14 +17,15 @@
     "README.md"
   ],
   "scripts": {
-    "umd": "cross-env BABEL_ENV=webpack webpack && npm run lib",
-    "min": "cross-env BABEL_ENV=webpack NODE_ENV=production webpack && npm run lib",
-    "lib": "babel src --out-dir lib && npm run lib:mobx && npm run lib:redux && npm run lib:router && npm run lib:native && npm run lib:server",
+    "umd": "cross-env BABEL_ENV=webpack webpack",
+    "min": "cross-env BABEL_ENV=webpack NODE_ENV=production webpack",
+    "lib": "babel src --out-dir lib",
     "lib:mobx": "babel mobx/base.js --out-file mobx/index.js && babel mobx/src --out-dir mobx",
     "lib:redux": "babel redux/base.js --out-file redux/index.js ",
     "lib:router": "babel router/base.js --out-file router/index.js ",
     "lib:native": "babel native/base.js --out-file native/index.js ",
     "lib:server": "babel server/base.js --out-file server/index.js ",
+    "build": "npm run umd && npm run min && npm run lib && npm run lib:mobx && npm run lib:redux && npm run lib:router && npm run lib:native && npm run lib:server",
     "lint": "eslint src"
   },
   "keywords": [

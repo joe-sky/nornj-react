@@ -1,19 +1,25 @@
 import nj, { registerFilter, registerExtension } from 'nornj';
 import extensionConfigs from '../extensionConfig';
 import { capitalize } from '../../lib/utils';
+import '../../lib/filter/options';
 
-registerFilter('options:', (val, opts) => {
-  if (val == null) {
-    return val;
+const VALUE_CHECKED = ['el-checkbox'];
+
+function _setOnChange(options, value, action, opts = {}) {
+  let {
+    valuePropName = 'value',
+      changeEventName = 'onChange',
+      beforeChange,
+      afterChange,
+      reverse = false
+  } = opts;
+  const parentType = options.parentType.toLowerCase();
+
+  if (valuePropName === 'value' && VALUE_CHECKED.indexOf(parentType) > -1) {
+    valuePropName = 'checked';
   }
-  return {
-    val,
-    _njMobxModelOpts: opts
-  };
-});
 
-function _setOnChange(options, value, action, opts) {
-  switch (options.parentType.toLowerCase()) {
+  switch (parentType) {
     case 'input':
     case 'select':
     case 'ant-input':
@@ -21,12 +27,22 @@ function _setOnChange(options, value, action, opts) {
     case 'ant-textarea':
     case 'ant-input.textarea':
       {
-        options.exProps.value = value.val;
-        options.exProps.onChange = e => {
-          if (action) {
-            value._njCtx[nj.isString(action) ? action : `set${capitalize(value.prop)}`](e.target.value);
-          } else {
-            value._njCtx[value.prop] = e.target.value;
+        options.exProps[valuePropName] = value.val;
+        options.exProps[changeEventName] = e => {
+          let preventChange,
+            v = e.target.value;
+          if (beforeChange) {
+            preventChange = beforeChange(v);
+          }
+
+          if (preventChange !== false) {
+            if (action) {
+              value._njCtx[nj.isString(action) ? action : `set${capitalize(value.prop)}`](reverse ? !v : v);
+            } else {
+              value._njCtx[value.prop] = reverse ? !v : v;
+            }
+
+            afterChange && afterChange();
           }
         };
         break;
@@ -34,13 +50,32 @@ function _setOnChange(options, value, action, opts) {
     case 'ant-select':
     case 'el-input':
     case 'el-select':
+    case 'el-datepicker':
+    case 'el-daterangepicker':
+    case 'el-timeselect':
+    case 'el-timepicker':
+    case 'el-timerangepicker':
+    case 'el-switch':
+    case 'el-checkbox':
+    case 'el-checkbox.group':
+    case 'el-radio.group':
+    default:
       {
-        options.exProps.value = value.val;
-        options.exProps.onChange = v => {
-          if (action) {
-            value._njCtx[nj.isString(action) ? action : `set${capitalize(value.prop)}`](v);
-          } else {
-            value._njCtx[value.prop] = v;
+        options.exProps[valuePropName] = value.val;
+        options.exProps[changeEventName] = v => {
+          let preventChange;
+          if (beforeChange) {
+            preventChange = beforeChange(e.target.value);
+          }
+
+          if (preventChange !== false) {
+            if (action) {
+              value._njCtx[nj.isString(action) ? action : `set${capitalize(value.prop)}`](reverse ? !v : v);
+            } else {
+              value._njCtx[value.prop] = reverse ? !v : v;
+            }
+
+            afterChange && afterChange();
           }
         };
         break;
@@ -56,7 +91,7 @@ registerExtension('mobx-model', options => {
 
   let value = ret,
     action = false,
-    opts = ret._njMobxModelOpts;
+    opts = ret._njOptions;
   if (opts) {
     value = ret.val;
     if (opts.action != null) {
@@ -75,7 +110,7 @@ registerExtension('mst-model', options => {
 
   let value = ret,
     action = true,
-    opts = ret._njMobxModelOpts;
+    opts = ret._njOptions;
   if (opts) {
     value = ret.val;
     if (opts.action != null) {
