@@ -1,9 +1,37 @@
 import nj, { registerFilter, registerExtension } from 'nornj';
+import { toJS } from 'mobx';
 import extensionConfigs from '../extensionConfig';
 import { capitalize } from '../../lib/utils';
 import '../../lib/filter/options';
 
-const VALUE_CHECKED = ['el-checkbox'];
+const VALUE_CHECKED = [
+  'ant-switch',
+  'el-checkbox'
+];
+const NEED_TOJS = [
+  'ant-cascader',
+  'el-cascader',
+  'el-checkbox.group',
+  'ant-checkbox.group'
+];
+
+function _setValue(value, params) {
+  let preventChange;
+  if (params.beforeChange) {
+    preventChange = params.beforeChange(value);
+  }
+
+  if (preventChange !== false) {
+    const _value = params.reverse ? !params.value.val : value;
+    if (params.action) {
+      params.value._njCtx[nj.isString(params.action) ? params.action : `set${capitalize(params.value.prop)}`](_value);
+    } else {
+      params.value._njCtx[params.value.prop] = _value;
+    }
+
+    params.afterChange && params.afterChange(value);
+  }
+}
 
 function _setOnChange(options, value, action, opts = {}) {
   let {
@@ -13,13 +41,18 @@ function _setOnChange(options, value, action, opts = {}) {
       afterChange,
       reverse = false
   } = opts;
-  const parentType = options.parentType.toLowerCase();
+  const parentName = options.parentName.toLowerCase();
 
-  if (valuePropName === 'value' && VALUE_CHECKED.indexOf(parentType) > -1) {
+  if (valuePropName === 'value' && VALUE_CHECKED.indexOf(parentName) > -1) {
     valuePropName = 'checked';
   }
 
-  switch (parentType) {
+  var _value = value.val;
+  if (NEED_TOJS.indexOf(parentName) > -1) {
+    _value = toJS(_value);
+  }
+
+  switch (parentName) {
     case 'input':
     case 'select':
     case 'ant-input':
@@ -27,27 +60,24 @@ function _setOnChange(options, value, action, opts = {}) {
     case 'ant-textarea':
     case 'ant-input.textarea':
       {
-        options.exProps[valuePropName] = value.val;
+        options.exProps[valuePropName] = _value;
         options.exProps[changeEventName] = e => {
-          let preventChange,
-            v = e.target.value;
-          if (beforeChange) {
-            preventChange = beforeChange(v);
-          }
-
-          if (preventChange !== false) {
-            if (action) {
-              value._njCtx[nj.isString(action) ? action : `set${capitalize(value.prop)}`](reverse ? !v : v);
-            } else {
-              value._njCtx[value.prop] = reverse ? !v : v;
-            }
-
-            afterChange && afterChange();
-          }
+          _setValue(e.target.value, {
+            parentName,
+            value,
+            action,
+            valuePropName,
+            beforeChange,
+            afterChange,
+            reverse
+          });
         };
         break;
       }
     case 'ant-select':
+    case 'ant-cascader':
+    case 'ant-switch':
+    case 'ant-checkbox.group':
     case 'el-input':
     case 'el-select':
     case 'el-datepicker':
@@ -59,24 +89,20 @@ function _setOnChange(options, value, action, opts = {}) {
     case 'el-checkbox':
     case 'el-checkbox.group':
     case 'el-radio.group':
+    case 'el-cascader':
     default:
       {
-        options.exProps[valuePropName] = value.val;
+        options.exProps[valuePropName] = _value;
         options.exProps[changeEventName] = v => {
-          let preventChange;
-          if (beforeChange) {
-            preventChange = beforeChange(e.target.value);
-          }
-
-          if (preventChange !== false) {
-            if (action) {
-              value._njCtx[nj.isString(action) ? action : `set${capitalize(value.prop)}`](reverse ? !v : v);
-            } else {
-              value._njCtx[value.prop] = reverse ? !v : v;
-            }
-
-            afterChange && afterChange();
-          }
+          _setValue(v, {
+            parentName,
+            value,
+            action,
+            valuePropName,
+            beforeChange,
+            afterChange,
+            reverse
+          });
         };
         break;
       }
