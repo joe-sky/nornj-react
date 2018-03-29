@@ -6,19 +6,28 @@ import '../../lib/filter/options';
 
 const VALUE_CHECKED = [
   'ant-switch',
+  'ant-checkbox',
   'el-checkbox'
 ];
 const NEED_TOJS = [
   'ant-cascader',
+  'ant-checkbox.group',
+  'ant-checkboxgroup',
+  'ant-datepicker.rangepicker',
+  'ant-rangepicker',
   'el-cascader',
   'el-checkbox.group',
-  'ant-checkbox.group'
+  'el-daterangepicker',
+  'el-timerangepicker'
+];
+const TARGET_CHECKED = [
+  'ant-checkbox'
 ];
 
 function _setValue(value, params) {
   let preventChange;
   if (params.beforeChange) {
-    preventChange = params.beforeChange(value);
+    preventChange = params.beforeChange(params.value.val, params.args);
   }
 
   if (preventChange !== false) {
@@ -29,7 +38,7 @@ function _setValue(value, params) {
       params.value._njCtx[params.value.prop] = _value;
     }
 
-    params.afterChange && params.afterChange(value);
+    params.afterChange && params.afterChange(params.value.val, params.args);
   }
 }
 
@@ -47,7 +56,7 @@ function _setOnChange(options, value, action, opts = {}) {
     valuePropName = 'checked';
   }
 
-  var _value = value.val;
+  let _value = value.val;
   if (NEED_TOJS.indexOf(parentName) > -1) {
     _value = toJS(_value);
   }
@@ -59,12 +68,19 @@ function _setOnChange(options, value, action, opts = {}) {
     case 'textarea':
     case 'ant-textarea':
     case 'ant-input.textarea':
+    case 'ant-checkbox':
+    case 'ant-radio.group':
       {
         options.exProps[valuePropName] = _value;
-        options.exProps[changeEventName] = e => {
-          _setValue(e.target.value, {
+        let _targetPropName = 'value';
+        if(TARGET_CHECKED.indexOf(parentName) > -1) {
+          _targetPropName = 'checked';
+        }
+        options.exProps[changeEventName] = function(e) {
+          _setValue(e.target[_targetPropName], {
             parentName,
             value,
+            args: arguments,
             action,
             valuePropName,
             beforeChange,
@@ -78,6 +94,14 @@ function _setOnChange(options, value, action, opts = {}) {
     case 'ant-cascader':
     case 'ant-switch':
     case 'ant-checkbox.group':
+    case 'ant-checkboxgroup':
+    case 'ant-datepicker':
+    case 'ant-datepicker.monthpicker':
+    case 'ant-datepicker.weekpicker':
+    case 'ant-datepicker.rangepicker':
+    case 'ant-monthpicker':
+    case 'ant-weekpicker':
+    case 'ant-rangepicker':
     case 'el-input':
     case 'el-select':
     case 'el-datepicker':
@@ -93,10 +117,11 @@ function _setOnChange(options, value, action, opts = {}) {
     default:
       {
         options.exProps[valuePropName] = _value;
-        options.exProps[changeEventName] = v => {
+        options.exProps[changeEventName] = function(v) {
           _setValue(v, {
             parentName,
             value,
+            args: arguments,
             action,
             valuePropName,
             beforeChange,
