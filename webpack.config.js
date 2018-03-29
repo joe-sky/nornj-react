@@ -2,9 +2,10 @@
 const path = require('path');
 
 const isProd = process.env.NODE_ENV == 'production';
-let libName = 'nornj-react.js';
+const with_ex = process.env.WITH_EX;
+let libName = `nornj-react${with_ex ? with_ex : ''}.js`;
 if (isProd) {
-  libName = 'nornj-react.min.js';
+  libName = `nornj-react${with_ex ? with_ex : ''}.min.js`;
 }
 
 let plugins = [new webpack.DefinePlugin({
@@ -42,12 +43,18 @@ const webpackExternals = {
     commonjs2: 'react-dom',
     commonjs: 'react-dom',
     amd: 'react-dom'
+  },
+  'mobx': {
+    root: 'mobx',
+    commonjs2: 'mobx',
+    commonjs: 'mobx',
+    amd: 'mobx'
   }
 };
 
 module.exports = {
   entry: {
-    index: './src/base.js'
+    index: `./src/base${with_ex ? with_ex : ''}.js`
   },
   devtool: isProd ? 'source-map' : false,
   externals: webpackExternals,

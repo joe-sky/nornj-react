@@ -1,6 +1,6 @@
 {
   "name": "nornj-react",
-  "version": "0.4.2-rc.5",
+  "version": "0.4.2-rc.7",
   "description": "React bindings for template engine NornJ",
   "main": "lib/base.js",
   "files": [
@@ -18,14 +18,16 @@
   ],
   "scripts": {
     "umd": "cross-env BABEL_ENV=webpack webpack",
+    "umd:with-ex": "cross-env BABEL_ENV=webpack WITH_EX=-with-extensions webpack",
     "min": "cross-env BABEL_ENV=webpack NODE_ENV=production webpack",
+    "min:with-ex": "cross-env BABEL_ENV=webpack NODE_ENV=production WITH_EX=-with-extensions webpack",
     "lib": "babel src --out-dir lib",
     "lib:mobx": "babel mobx/base.js --out-file mobx/index.js && babel mobx/src --out-dir mobx",
     "lib:redux": "babel redux/base.js --out-file redux/index.js ",
     "lib:router": "babel router/base.js --out-file router/index.js ",
     "lib:native": "babel native/base.js --out-file native/index.js ",
     "lib:server": "babel server/base.js --out-file server/index.js ",
-    "build": "npm run umd && npm run min && npm run lib && npm run lib:mobx && npm run lib:redux && npm run lib:router && npm run lib:native && npm run lib:server",
+    "build": "npm run lib && npm run lib:mobx && npm run lib:redux && npm run lib:router && npm run lib:native && npm run lib:server && npm run umd && npm run umd:with-ex && npm run min && npm run min:with-ex",
     "lint": "eslint src"
   },
   "keywords": [
