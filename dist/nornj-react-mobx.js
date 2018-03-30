@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("nornj"), require("mobx-react"), require("mobx"));
+		module.exports = factory(require("nornj"), require("mobx"), require("mobx-react"));
 	else if(typeof define === 'function' && define.amd)
-		define(["nornj", "mobx-react", "mobx"], factory);
+		define(["nornj", "mobx", "mobx-react"], factory);
 	else if(typeof exports === 'object')
-		exports["NornJReactMobx"] = factory(require("nornj"), require("mobx-react"), require("mobx"));
+		exports["NornJReactMobx"] = factory(require("nornj"), require("mobx"), require("mobx-react"));
 	else
-		root["NornJReactMobx"] = factory(root["nj"], root["mobxReact"], root["mobx"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_4__) {
+		root["NornJReactMobx"] = factory(root["nj"], root["mobx"], root["mobxReact"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_3__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -81,6 +81,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88,20 +94,25 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 
 var _nornj = __webpack_require__(0);
 
-var _mobxReact = __webpack_require__(2);
+var _mobx = __webpack_require__(1);
 
-__webpack_require__(3);
+var _mobxReact = __webpack_require__(3);
+
+__webpack_require__(4);
 
 (0, _nornj.registerComponent)('mobx-Provider', _mobxReact.Provider);
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+(0, _nornj.registerFilter)('toJS', function (v) {
+  return (0, _mobx.toJS)(v);
+});
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -111,7 +122,7 @@ var _nornj = __webpack_require__(0);
 
 var _nornj2 = _interopRequireDefault(_nornj);
 
-var _mobx = __webpack_require__(4);
+var _mobx = __webpack_require__(1);
 
 var _extensionConfig = __webpack_require__(5);
 
@@ -279,12 +290,6 @@ function _setOnChange(options, value, action) {
 
   _setOnChange(options, value, action, opts);
 }, _extensionConfig2.default['mst-model']);
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
 
 /***/ }),
 /* 5 */
