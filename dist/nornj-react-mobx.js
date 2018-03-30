@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("nornj"), require("react"), require("mobx"), require("react-dom"));
+		module.exports = factory(require("nornj"), require("mobx-react"), require("mobx"));
 	else if(typeof define === 'function' && define.amd)
-		define(["nornj", "react", "mobx", "react-dom"], factory);
+		define(["nornj", "mobx-react", "mobx"], factory);
 	else if(typeof exports === 'object')
-		exports["NornJReact"] = factory(require("nornj"), require("react"), require("mobx"), require("react-dom"));
+		exports["NornJReactMobx"] = factory(require("nornj"), require("mobx-react"), require("mobx"));
 	else
-		root["NornJReact"] = factory(root["nj"], root["React"], root["mobx"], root["ReactDOM"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_14__) {
+		root["NornJReactMobx"] = factory(root["nj"], root["mobxReact"], root["mobx"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_4__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -81,165 +81,27 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-  initialData: null,
-  initialDelimiters: null
-});
+
+
+var _nornj = __webpack_require__(0);
+
+var _mobxReact = __webpack_require__(2);
+
+__webpack_require__(3);
+
+(0, _nornj.registerComponent)('mobx-Provider', _mobxReact.Provider);
 
 /***/ }),
 /* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nornj__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nornj___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_nornj__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__registerTmpl__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__docReady__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mobx_extension_mobx_model__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mobx_extension_mobx_model___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__mobx_extension_mobx_model__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__renderTmplTag__ = __webpack_require__(13);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "renderTmplTag", function() { return __WEBPACK_IMPORTED_MODULE_6__renderTmplTag__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "registerTmpl", function() { return __WEBPACK_IMPORTED_MODULE_3__registerTmpl__["a"]; });
-
-
-
-
-
-
-
-__WEBPACK_IMPORTED_MODULE_1_nornj___default.a.assign(__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */], {
-  registerTmpl: __WEBPACK_IMPORTED_MODULE_3__registerTmpl__["a" /* default */],
-  docReady: __WEBPACK_IMPORTED_MODULE_4__docReady__["a" /* default */]
-});
-
-//Set createElement function for NornJ
-__WEBPACK_IMPORTED_MODULE_1_nornj___default.a.config({
-  createElement: __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement,
-  outputH: true,
-  delimiters: {
-    start: '{',
-    end: '}',
-    comment: ''
-  }
-});
-
-var _global = void 0;
-if (typeof self !== 'undefined') {
-  _global = self;
-
-  //Initial render templates
-  Object(__WEBPACK_IMPORTED_MODULE_4__docReady__["a" /* default */])(function () {
-    return __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].renderTmplTag({
-      data: __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].initialData,
-      delimiters: __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].initialDelimiters,
-      isAuto: true
-    });
-  });
-} else {
-  _global = global;
-}
-_global.NornJReact = _global.njr = __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */];
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */]);
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = registerTmpl;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_nornj__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_nornj___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_nornj__);
-
-
-//注册模板装饰器
-function registerTmpl(name, template, cache, components) {
-  if (__WEBPACK_IMPORTED_MODULE_0_nornj___default.a.isObject(name)) {
-    template = name.template;
-    cache = name.cache;
-    components = name.components;
-    name = name.name;
-  }
-
-  return function (target) {
-    //注册组件
-    if (name != null) {
-      __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.registerComponent(name, target);
-    }
-
-    //从标签的innerHTML获取模板
-    if (/^#{1}/.test(template)) {
-      template = document.querySelector(template).innerHTML;
-    }
-
-    //创建模板函数
-    if (template) {
-      target.prototype.template = (template._njTmpl ? template : __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.compileH(template, cache ? name : null)).bind({ _njIcp: __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.isArray(components) ? components : [components] });
-    }
-
-    return target;
-  };
-}
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function (callback) {
-  var doc = document;
-  if (doc.addEventListener) {
-    doc.addEventListener("DOMContentLoaded", callback, false);
-  } else {
-    self.attachEvent("onload", callback);
-  }
-});
-
-/***/ }),
-/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -249,15 +111,15 @@ var _nornj = __webpack_require__(0);
 
 var _nornj2 = _interopRequireDefault(_nornj);
 
-var _mobx = __webpack_require__(8);
+var _mobx = __webpack_require__(4);
 
-var _extensionConfig = __webpack_require__(9);
+var _extensionConfig = __webpack_require__(5);
 
 var _extensionConfig2 = _interopRequireDefault(_extensionConfig);
 
-var _utils = __webpack_require__(10);
+var _utils = __webpack_require__(6);
 
-__webpack_require__(11);
+__webpack_require__(7);
 
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
@@ -419,13 +281,13 @@ function _setOnChange(options, value, action) {
 }, _extensionConfig2.default['mst-model']);
 
 /***/ }),
-/* 8 */
+/* 4 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
 
 /***/ }),
-/* 9 */
+/* 5 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -448,7 +310,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 10 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -462,7 +324,7 @@ var capitalize = exports.capitalize = function capitalize(str) {
 };
 
 /***/ }),
-/* 11 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -470,7 +332,7 @@ var capitalize = exports.capitalize = function capitalize(str) {
 
 var _nornj = __webpack_require__(0);
 
-var _filterConfig = __webpack_require__(12);
+var _filterConfig = __webpack_require__(8);
 
 var _filterConfig2 = _interopRequireDefault(_filterConfig);
 
@@ -489,7 +351,7 @@ function _interopRequireDefault(obj) {
 }, _filterConfig2.default['options:']);
 
 /***/ }),
-/* 12 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -501,83 +363,6 @@ module.exports = {
     hasOptions: false
   }
 };
-
-/***/ }),
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = renderTmplTag;
-/* unused harmony export setInitialData */
-/* unused harmony export setInitialDelimiters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nornj__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nornj___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_nornj__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
-
-
-
-
-//渲染模板标签
-function renderTmplTag() {
-  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var data = options.data,
-      selector = options.selector,
-      target = options.target,
-      isAuto = options.isAuto,
-      delimiters = options.delimiters;
-
-  if (!selector) {
-    selector = 'script[type="text/nornj"]' + (isAuto ? '[data-auto]' : '');
-  }
-
-  var tags = document.querySelectorAll(selector),
-      ret = [];
-
-  __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.each(tags, function (tag) {
-    var tmplFn = __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.compileH(tag.innerHTML, tag.id, null, delimiters);
-    var targetNode = void 0;
-
-    if (target == null) {
-      target = tag.getAttribute('data-target');
-    }
-    if (target) {
-      if (__WEBPACK_IMPORTED_MODULE_1_nornj___default.a.isString(target)) {
-        targetNode = document.querySelector(target);
-      } else {
-        targetNode = target;
-      }
-    } else {
-      targetNode = tag.parentNode;
-    }
-
-    ret.push(__WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_1_nornj___default.a.isArray(data) ? tmplFn.apply(null, data) : tmplFn(data), targetNode));
-  }, null, true);
-
-  return ret;
-}
-
-//Set initial data for inline component
-function setInitialData(data) {
-  __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].initialData = data;
-}
-
-function setInitialDelimiters(delimiters) {
-  __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].initialDelimiters = delimiters;
-}
-
-__WEBPACK_IMPORTED_MODULE_1_nornj___default.a.assign(__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */], {
-  renderTmplTag: renderTmplTag,
-  setInitialData: setInitialData,
-  setInitialDelimiters: setInitialDelimiters
-});
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_14__;
 
 /***/ })
 /******/ ]);

@@ -1,7 +1,7 @@
 /node_modules/
 /lib/
 /mobx/index.js
-/mobx/extension/
+/mobx/lib/
 /native/index.js
 /router/index.js
 /redux/index.js

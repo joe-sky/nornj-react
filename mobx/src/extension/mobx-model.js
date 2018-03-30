@@ -1,8 +1,8 @@
 import nj, { registerFilter, registerExtension } from 'nornj';
 import { toJS } from 'mobx';
-import extensionConfigs from '../extensionConfig';
-import { capitalize } from '../../lib/utils';
-import '../../lib/filter/options';
+import extensionConfigs from '../../extensionConfig';
+import { capitalize } from '../../../lib/utils';
+import '../../../lib/filter/options';
 
 const VALUE_CHECKED = [
   'ant-switch',
