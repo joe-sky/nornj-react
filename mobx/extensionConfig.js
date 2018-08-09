@@ -5,7 +5,8 @@ module.exports = {
     exProps: true,
     subExProps: true,
     isProp: true,
-    addSet: true
+    addSet: true,
+    useExpressionInJsx: true
   },
   'mst-model': {
     onlyGlobal: true,
@@ -13,6 +14,7 @@ module.exports = {
     exProps: true,
     subExProps: true,
     isProp: true,
-    addSet: true
+    addSet: true,
+    useExpressionInJsx: true
   }
 };

@@ -136,10 +136,6 @@ function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
 
-var VALUE_CHECKED = ['ant-switch', 'ant-checkbox', 'el-checkbox'];
-var NEED_TOJS = ['ant-cascader', 'ant-checkbox.group', 'ant-checkboxgroup', 'ant-datepicker.rangepicker', 'ant-rangepicker', 'el-cascader', 'el-checkbox.group', 'el-daterangepicker', 'el-timerangepicker'];
-var TARGET_CHECKED = ['ant-checkbox'];
-
 function _setValue(value, params) {
   var preventChange = void 0;
   if (params.beforeChange) {
@@ -169,87 +165,46 @@ function _setOnChange(options, value, action) {
       _opts$reverse = opts.reverse,
       reverse = _opts$reverse === undefined ? false : _opts$reverse;
 
-  var parentName = options.parentName.toLowerCase();
+  var tagName = options.tagName;
+  var componentConfig = _nornj2.default.getComponentConfig(tagName) || {};
 
-  if (valuePropName === 'value' && VALUE_CHECKED.indexOf(parentName) > -1) {
-    valuePropName = 'checked';
+  if (valuePropName === 'value' && componentConfig.valuePropName != null) {
+    valuePropName = componentConfig.valuePropName;
   }
 
   var _value = value.val;
-  if (NEED_TOJS.indexOf(parentName) > -1) {
+  if (componentConfig.needToJS) {
     _value = (0, _mobx.toJS)(_value);
   }
 
-  switch (parentName) {
-    case 'input':
-    case 'select':
-    case 'ant-input':
-    case 'textarea':
-    case 'ant-textarea':
-    case 'ant-input.textarea':
-    case 'ant-checkbox':
-    case 'ant-radio.group':
-      {
-        options.exProps[valuePropName] = _value;
-        var _targetPropName = 'value';
-        if (TARGET_CHECKED.indexOf(parentName) > -1) {
-          _targetPropName = 'checked';
-        }
-        options.exProps[changeEventName] = function (e) {
-          _setValue(e.target[_targetPropName], {
-            parentName: parentName,
-            value: value,
-            args: arguments,
-            action: action,
-            valuePropName: valuePropName,
-            beforeChange: beforeChange,
-            afterChange: afterChange,
-            reverse: reverse
-          });
-        };
-        break;
-      }
-    case 'ant-select':
-    case 'ant-cascader':
-    case 'ant-switch':
-    case 'ant-checkbox.group':
-    case 'ant-checkboxgroup':
-    case 'ant-datepicker':
-    case 'ant-datepicker.monthpicker':
-    case 'ant-datepicker.weekpicker':
-    case 'ant-datepicker.rangepicker':
-    case 'ant-monthpicker':
-    case 'ant-weekpicker':
-    case 'ant-rangepicker':
-    case 'el-input':
-    case 'el-select':
-    case 'el-datepicker':
-    case 'el-daterangepicker':
-    case 'el-timeselect':
-    case 'el-timepicker':
-    case 'el-timerangepicker':
-    case 'el-switch':
-    case 'el-checkbox':
-    case 'el-checkbox.group':
-    case 'el-radio.group':
-    case 'el-cascader':
-    default:
-      {
-        options.exProps[valuePropName] = _value;
-        options.exProps[changeEventName] = function (v) {
-          _setValue(v, {
-            parentName: parentName,
-            value: value,
-            args: arguments,
-            action: action,
-            valuePropName: valuePropName,
-            beforeChange: beforeChange,
-            afterChange: afterChange,
-            reverse: reverse
-          });
-        };
-        break;
-      }
+  if (componentConfig.hasEventObject) {
+    var targetPropName = componentConfig.targetPropName || 'value';
+
+    options.exProps[valuePropName] = _value;
+    options.exProps[changeEventName] = function (e) {
+      _setValue(e.target[targetPropName], {
+        value: value,
+        args: arguments,
+        action: action,
+        valuePropName: valuePropName,
+        beforeChange: beforeChange,
+        afterChange: afterChange,
+        reverse: reverse
+      });
+    };
+  } else {
+    options.exProps[valuePropName] = _value;
+    options.exProps[changeEventName] = function (v) {
+      _setValue(v, {
+        value: value,
+        args: arguments,
+        action: action,
+        valuePropName: valuePropName,
+        beforeChange: beforeChange,
+        afterChange: afterChange,
+        reverse: reverse
+      });
+    };
   }
 }
 
@@ -302,7 +257,8 @@ module.exports = {
     exProps: true,
     subExProps: true,
     isProp: true,
-    addSet: true
+    addSet: true,
+    useExpressionInJsx: true
   },
   'mst-model': {
     onlyGlobal: true,
@@ -310,7 +266,8 @@ module.exports = {
     exProps: true,
     subExProps: true,
     isProp: true,
-    addSet: true
+    addSet: true,
+    useExpressionInJsx: true
   }
 };
 

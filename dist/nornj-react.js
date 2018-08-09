@@ -127,6 +127,10 @@ __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.config({
   }
 });
 
+var _defaultCfg = { hasEventObject: true },
+    componentConfig = __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.componentConfig;
+componentConfig.input = componentConfig.select = componentConfig.textarea = _defaultCfg;
+
 var _global = void 0;
 if (typeof self !== 'undefined') {
   _global = self;

@@ -1,6 +1,6 @@
 {
   "name": "nornj-react",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "React bindings for template engine NornJ",
   "main": "lib/base.js",
   "files": [

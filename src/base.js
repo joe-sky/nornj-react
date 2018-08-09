@@ -20,6 +20,10 @@ nj.config({
   }
 });
 
+const _defaultCfg = { hasEventObject: true },
+  componentConfig = nj.componentConfig;
+componentConfig.input = componentConfig.select = componentConfig.textarea = _defaultCfg;
+
 let _global;
 if (typeof self !== 'undefined') {
   _global = self;
