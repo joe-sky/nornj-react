@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [v0.4.3] 2018.08.07
+## [v0.4.3] 2018.08.10
 
 * 🌟 `mobx-model`支持[babel-plugin-nornj-in-jsx](https://github.com/joe-sky/nornj/blob/master/packages/babel-plugin-nornj-in-jsx/README.md)插件。
 
