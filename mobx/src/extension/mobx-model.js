@@ -4,10 +4,10 @@ import extensionConfigs from '../../extensionConfig';
 import { capitalize } from '../../../lib/utils';
 import '../../../lib/filter/options';
 
-function _setValue(value, params) {
+function _setValue(value, params, compInstance) {
   let preventChange;
   if (params.beforeChange) {
-    preventChange = params.beforeChange(params.value.val, params.args);
+    preventChange = params.beforeChange.apply(compInstance, params.value.val, ...params.args);
   }
 
   if (preventChange !== false) {
@@ -18,7 +18,8 @@ function _setValue(value, params) {
       params.value._njCtx[params.value.prop] = _value;
     }
 
-    params.afterChange && params.afterChange(params.value.val, params.args);
+    params.changeEvent && params.changeEvent.apply(compInstance, params.args);
+    params.afterChange && params.afterChange.apply(compInstance, params.value.val, ...params.args);
   }
 }
 
@@ -30,7 +31,11 @@ function _setOnChange(options, value, action, opts = {}) {
     afterChange,
     reverse = false
   } = opts;
-  const tagName = options.tagName;
+  const {
+    tagName,
+    attrs,
+    context: { data }
+  } = options;
   const componentConfig = nj.getComponentConfig(tagName) || {};
 
   if (valuePropName === 'value' && componentConfig.valuePropName != null) {
@@ -42,34 +47,38 @@ function _setOnChange(options, value, action, opts = {}) {
     _value = toJS(_value);
   }
 
+  const changeEvent = attrs[changeEventName];
+  const compInstance = data[data.length - 1];
   if (componentConfig.hasEventObject) {
     const targetPropName = componentConfig.targetPropName || 'value';
 
-    options.exProps[valuePropName] = _value;
-    options.exProps[changeEventName] = function (e) {
+    attrs[valuePropName] = _value;
+    attrs[changeEventName] = function (e) {
       _setValue(e.target[targetPropName], {
         value,
         args: arguments,
+        changeEvent,
         action,
         valuePropName,
         beforeChange,
         afterChange,
         reverse
-      });
+      }, compInstance);
     };
   }
   else {
-    options.exProps[valuePropName] = _value;
-    options.exProps[changeEventName] = function (v) {
+    attrs[valuePropName] = _value;
+    attrs[changeEventName] = function (v) {
       _setValue(v, {
         value,
         args: arguments,
+        changeEvent,
         action,
         valuePropName,
         beforeChange,
         afterChange,
         reverse
-      });
+      }, compInstance);
     };
   }
 }

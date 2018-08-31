@@ -136,13 +136,27 @@ function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
 
-function _setValue(value, params) {
+function _toConsumableArray(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }return arr2;
+  } else {
+    return Array.from(arr);
+  }
+}
+
+function _setValue(value, params, compInstance) {
   var preventChange = void 0;
   if (params.beforeChange) {
-    preventChange = params.beforeChange(params.value.val, params.args);
+    var _params$beforeChange;
+
+    preventChange = (_params$beforeChange = params.beforeChange).apply.apply(_params$beforeChange, [compInstance, params.value.val].concat(_toConsumableArray(params.args)));
   }
 
   if (preventChange !== false) {
+    var _params$afterChange;
+
     var _value = params.reverse ? !params.value.val : value;
     if (params.action) {
       params.value._njCtx[_nornj2.default.isString(params.action) ? params.action : 'set' + (0, _utils.capitalize)(params.value.prop)](_value);
@@ -150,7 +164,8 @@ function _setValue(value, params) {
       params.value._njCtx[params.value.prop] = _value;
     }
 
-    params.afterChange && params.afterChange(params.value.val, params.args);
+    params.changeEvent && params.changeEvent.apply(compInstance, params.args);
+    params.afterChange && (_params$afterChange = params.afterChange).apply.apply(_params$afterChange, [compInstance, params.value.val].concat(_toConsumableArray(params.args)));
   }
 }
 
@@ -164,8 +179,10 @@ function _setOnChange(options, value, action) {
       afterChange = opts.afterChange,
       _opts$reverse = opts.reverse,
       reverse = _opts$reverse === undefined ? false : _opts$reverse;
+  var tagName = options.tagName,
+      attrs = options.attrs,
+      data = options.context.data;
 
-  var tagName = options.tagName;
   var componentConfig = _nornj2.default.getComponentConfig(tagName) || {};
 
   if (valuePropName === 'value' && componentConfig.valuePropName != null) {
@@ -177,33 +194,37 @@ function _setOnChange(options, value, action) {
     _value = (0, _mobx.toJS)(_value);
   }
 
+  var changeEvent = attrs[changeEventName];
+  var compInstance = data[data.length - 1];
   if (componentConfig.hasEventObject) {
     var targetPropName = componentConfig.targetPropName || 'value';
 
-    options.exProps[valuePropName] = _value;
-    options.exProps[changeEventName] = function (e) {
+    attrs[valuePropName] = _value;
+    attrs[changeEventName] = function (e) {
       _setValue(e.target[targetPropName], {
         value: value,
         args: arguments,
+        changeEvent: changeEvent,
         action: action,
         valuePropName: valuePropName,
         beforeChange: beforeChange,
         afterChange: afterChange,
         reverse: reverse
-      });
+      }, compInstance);
     };
   } else {
-    options.exProps[valuePropName] = _value;
-    options.exProps[changeEventName] = function (v) {
+    attrs[valuePropName] = _value;
+    attrs[changeEventName] = function (v) {
       _setValue(v, {
         value: value,
         args: arguments,
+        changeEvent: changeEvent,
         action: action,
         valuePropName: valuePropName,
         beforeChange: beforeChange,
         afterChange: afterChange,
         reverse: reverse
-      });
+      }, compInstance);
     };
   }
 }
