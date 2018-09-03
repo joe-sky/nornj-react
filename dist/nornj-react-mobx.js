@@ -229,7 +229,7 @@ function _setOnChange(options, value, action) {
   }
 }
 
-(0, _nornj.registerExtension)('mobx-model', function (options) {
+(0, _nornj.registerExtension)('mobx', function (options) {
   var ret = options.result();
   if (ret == null) {
     return ret;
@@ -246,9 +246,9 @@ function _setOnChange(options, value, action) {
   }
 
   _setOnChange(options, value, action, opts);
-}, _extensionConfig2.default['mobx-model']);
+}, _extensionConfig2.default['mobx']);
 
-(0, _nornj.registerExtension)('mst-model', function (options) {
+(0, _nornj.registerExtension)('mst', function (options) {
   var ret = options.result();
   if (ret == null) {
     return ret;
@@ -265,14 +265,14 @@ function _setOnChange(options, value, action) {
   }
 
   _setOnChange(options, value, action, opts);
-}, _extensionConfig2.default['mst-model']);
+}, _extensionConfig2.default['mst']);
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
 module.exports = {
-  'mobx-model': {
+  'mobx': {
     onlyGlobal: true,
     newContext: false,
     exProps: true,
@@ -281,7 +281,7 @@ module.exports = {
     addSet: true,
     useExpressionInJsx: true
   },
-  'mst-model': {
+  'mst': {
     onlyGlobal: true,
     newContext: false,
     exProps: true,

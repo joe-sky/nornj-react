@@ -1,5 +1,5 @@
 module.exports = {
-  'mobx-model': {
+  'mobx': {
     onlyGlobal: true,
     newContext: false,
     exProps: true,
@@ -8,7 +8,7 @@ module.exports = {
     addSet: true,
     useExpressionInJsx: true
   },
-  'mst-model': {
+  'mst': {
     onlyGlobal: true,
     newContext: false,
     exProps: true,

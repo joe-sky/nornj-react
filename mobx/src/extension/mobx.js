@@ -83,7 +83,7 @@ function _setOnChange(options, value, action, opts = {}) {
   }
 }
 
-registerExtension('mobx-model', options => {
+registerExtension('mobx', options => {
   const ret = options.result();
   if (ret == null) {
     return ret;
@@ -100,9 +100,9 @@ registerExtension('mobx-model', options => {
   }
 
   _setOnChange(options, value, action, opts);
-}, extensionConfigs['mobx-model']);
+}, extensionConfigs['mobx']);
 
-registerExtension('mst-model', options => {
+registerExtension('mst', options => {
   const ret = options.result();
   if (ret == null) {
     return ret;
@@ -119,4 +119,4 @@ registerExtension('mst-model', options => {
   }
 
   _setOnChange(options, value, action, opts);
-}, extensionConfigs['mst-model']);
+}, extensionConfigs['mst']);
