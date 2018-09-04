@@ -7,7 +7,7 @@ import '../../../lib/filter/options';
 function _setValue(value, params, compInstance) {
   let preventChange;
   if (params.beforeChange) {
-    preventChange = params.beforeChange.apply(compInstance, params.value.val, ...params.args);
+    preventChange = params.beforeChange.apply(compInstance, [params.value.val].concat(params.args));
   }
 
   if (preventChange !== false) {
@@ -19,7 +19,7 @@ function _setValue(value, params, compInstance) {
     }
 
     params.changeEvent && params.changeEvent.apply(compInstance, params.args);
-    params.afterChange && params.afterChange.apply(compInstance, params.value.val, ...params.args);
+    params.afterChange && params.afterChange.apply(compInstance, [params.value.val].concat(params.args));
   }
 }
 
@@ -83,7 +83,16 @@ function _setOnChange(options, value, action, opts = {}) {
   }
 }
 
+function _isBind(props) {
+  const arg = props.arguments[0];
+  return arg === 'bind' || arg === 'model';
+}
+
 registerExtension('mobx', options => {
+  const { props } = options;
+  if (!props || !_isBind(props)) {
+    return;
+  }
   const ret = options.result();
   if (ret == null) {
     return ret;
@@ -103,6 +112,10 @@ registerExtension('mobx', options => {
 }, extensionConfigs['mobx']);
 
 registerExtension('mst', options => {
+  const { props } = options;
+  if (!props || !_isBind(props)) {
+    return;
+  }
   const ret = options.result();
   if (ret == null) {
     return ret;

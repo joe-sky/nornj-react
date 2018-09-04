@@ -136,27 +136,13 @@ function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
 
-function _toConsumableArray(arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
-      arr2[i] = arr[i];
-    }return arr2;
-  } else {
-    return Array.from(arr);
-  }
-}
-
 function _setValue(value, params, compInstance) {
   var preventChange = void 0;
   if (params.beforeChange) {
-    var _params$beforeChange;
-
-    preventChange = (_params$beforeChange = params.beforeChange).apply.apply(_params$beforeChange, [compInstance, params.value.val].concat(_toConsumableArray(params.args)));
+    preventChange = params.beforeChange.apply(compInstance, [params.value.val].concat(params.args));
   }
 
   if (preventChange !== false) {
-    var _params$afterChange;
-
     var _value = params.reverse ? !params.value.val : value;
     if (params.action) {
       params.value._njCtx[_nornj2.default.isString(params.action) ? params.action : 'set' + (0, _utils.capitalize)(params.value.prop)](_value);
@@ -165,7 +151,7 @@ function _setValue(value, params, compInstance) {
     }
 
     params.changeEvent && params.changeEvent.apply(compInstance, params.args);
-    params.afterChange && (_params$afterChange = params.afterChange).apply.apply(_params$afterChange, [compInstance, params.value.val].concat(_toConsumableArray(params.args)));
+    params.afterChange && params.afterChange.apply(compInstance, [params.value.val].concat(params.args));
   }
 }
 
@@ -229,7 +215,17 @@ function _setOnChange(options, value, action) {
   }
 }
 
+function _isBind(props) {
+  var arg = props.arguments[0];
+  return arg === 'bind' || arg === 'model';
+}
+
 (0, _nornj.registerExtension)('mobx', function (options) {
+  var props = options.props;
+
+  if (!props || !_isBind(props)) {
+    return;
+  }
   var ret = options.result();
   if (ret == null) {
     return ret;
@@ -249,6 +245,11 @@ function _setOnChange(options, value, action) {
 }, _extensionConfig2.default['mobx']);
 
 (0, _nornj.registerExtension)('mst', function (options) {
+  var props = options.props;
+
+  if (!props || !_isBind(props)) {
+    return;
+  }
   var ret = options.result();
   if (ret == null) {
     return ret;
