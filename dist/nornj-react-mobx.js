@@ -130,41 +130,24 @@ var _extensionConfig2 = _interopRequireDefault(_extensionConfig);
 
 var _utils = __webpack_require__(6);
 
-__webpack_require__(7);
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
 
 function _setValue(value, params, compInstance) {
-  var preventChange = void 0;
-  if (params.beforeChange) {
-    preventChange = params.beforeChange.apply(compInstance, [params.value.val].concat(params.args));
+  var _value = params.reverse ? !params.value.val : value;
+  if (params.action) {
+    params.value._njCtx['set' + (0, _utils.capitalize)(params.value.prop)](_value);
+  } else {
+    params.value._njCtx[params.value.prop] = _value;
   }
 
-  if (preventChange !== false) {
-    var _value = params.reverse ? !params.value.val : value;
-    if (params.action) {
-      params.value._njCtx[_nornj2.default.isString(params.action) ? params.action : 'set' + (0, _utils.capitalize)(params.value.prop)](_value);
-    } else {
-      params.value._njCtx[params.value.prop] = _value;
-    }
-
-    params.changeEvent && params.changeEvent.apply(compInstance, params.args);
-    params.afterChange && params.afterChange.apply(compInstance, [params.value.val].concat(params.args));
-  }
+  params.changeEvent && params.changeEvent.apply(compInstance, params.args);
 }
 
 function _setOnChange(options, value, action) {
-  var opts = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-  var _opts$valuePropName = opts.valuePropName,
-      valuePropName = _opts$valuePropName === undefined ? 'value' : _opts$valuePropName,
-      _opts$changeEventName = opts.changeEventName,
-      changeEventName = _opts$changeEventName === undefined ? 'onChange' : _opts$changeEventName,
-      beforeChange = opts.beforeChange,
-      afterChange = opts.afterChange,
-      _opts$reverse = opts.reverse,
-      reverse = _opts$reverse === undefined ? false : _opts$reverse;
+  var valuePropName = 'value',
+      changeEventName = 'onChange';
   var tagName = options.tagName,
       attrs = options.attrs,
       data = options.context.data;
@@ -192,10 +175,7 @@ function _setOnChange(options, value, action) {
         args: arguments,
         changeEvent: changeEvent,
         action: action,
-        valuePropName: valuePropName,
-        beforeChange: beforeChange,
-        afterChange: afterChange,
-        reverse: reverse
+        valuePropName: valuePropName
       }, compInstance);
     };
   } else {
@@ -206,10 +186,7 @@ function _setOnChange(options, value, action) {
         args: arguments,
         changeEvent: changeEvent,
         action: action,
-        valuePropName: valuePropName,
-        beforeChange: beforeChange,
-        afterChange: afterChange,
-        reverse: reverse
+        valuePropName: valuePropName
       }, compInstance);
     };
   }
@@ -218,6 +195,10 @@ function _setOnChange(options, value, action) {
 function _isBind(props) {
   var arg = props.arguments[0];
   return arg === 'bind' || arg === 'model';
+}
+
+function _useAction(modifiers) {
+  return modifiers ? modifiers.indexOf('action') >= 0 : false;
 }
 
 (0, _nornj.registerExtension)('mobx', function (options) {
@@ -231,17 +212,7 @@ function _isBind(props) {
     return ret;
   }
 
-  var value = ret,
-      action = false,
-      opts = ret._njOptions;
-  if (opts) {
-    value = ret.val;
-    if (opts.action != null) {
-      action = opts.action;
-    }
-  }
-
-  _setOnChange(options, value, action, opts);
+  _setOnChange(options, ret, _useAction(props.modifiers));
 }, _extensionConfig2.default['mobx']);
 
 (0, _nornj.registerExtension)('mst', function (options) {
@@ -255,17 +226,7 @@ function _isBind(props) {
     return ret;
   }
 
-  var value = ret,
-      action = true,
-      opts = ret._njOptions;
-  if (opts) {
-    value = ret.val;
-    if (opts.action != null) {
-      action = opts.action;
-    }
-  }
-
-  _setOnChange(options, value, action, opts);
+  _setOnChange(options, ret, true);
 }, _extensionConfig2.default['mst']);
 
 /***/ }),
@@ -305,47 +266,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 var capitalize = exports.capitalize = function capitalize(str) {
   return str[0].toUpperCase() + str.substr(1);
-};
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _nornj = __webpack_require__(0);
-
-var _filterConfig = __webpack_require__(8);
-
-var _filterConfig2 = _interopRequireDefault(_filterConfig);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
-
-(0, _nornj.registerFilter)('options:', function (val, opts) {
-  if (val == null) {
-    return val;
-  }
-  return {
-    val: val,
-    _njOptions: opts
-  };
-}, _filterConfig2.default['options:']);
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = {
-  'options:': {
-    onlyGlobal: true,
-    hasOptions: false
-  }
 };
 
 /***/ })

@@ -2,35 +2,21 @@ import nj, { registerExtension } from 'nornj';
 import { toJS } from 'mobx';
 import extensionConfigs from '../../extensionConfig';
 import { capitalize } from '../../../lib/utils';
-import '../../../lib/filter/options';
 
 function _setValue(value, params, compInstance) {
-  let preventChange;
-  if (params.beforeChange) {
-    preventChange = params.beforeChange.apply(compInstance, [params.value.val].concat(params.args));
+  const _value = params.reverse ? !params.value.val : value;
+  if (params.action) {
+    params.value._njCtx[`set${capitalize(params.value.prop)}`](_value);
+  } else {
+    params.value._njCtx[params.value.prop] = _value;
   }
 
-  if (preventChange !== false) {
-    const _value = params.reverse ? !params.value.val : value;
-    if (params.action) {
-      params.value._njCtx[nj.isString(params.action) ? params.action : `set${capitalize(params.value.prop)}`](_value);
-    } else {
-      params.value._njCtx[params.value.prop] = _value;
-    }
-
-    params.changeEvent && params.changeEvent.apply(compInstance, params.args);
-    params.afterChange && params.afterChange.apply(compInstance, [params.value.val].concat(params.args));
-  }
+  params.changeEvent && params.changeEvent.apply(compInstance, params.args);
 }
 
-function _setOnChange(options, value, action, opts = {}) {
-  let {
-    valuePropName = 'value',
-    changeEventName = 'onChange',
-    beforeChange,
-    afterChange,
-    reverse = false
-  } = opts;
+function _setOnChange(options, value, action) {
+  let valuePropName = 'value',
+    changeEventName = 'onChange';
   const {
     tagName,
     attrs,
@@ -59,10 +45,7 @@ function _setOnChange(options, value, action, opts = {}) {
         args: arguments,
         changeEvent,
         action,
-        valuePropName,
-        beforeChange,
-        afterChange,
-        reverse
+        valuePropName
       }, compInstance);
     };
   }
@@ -74,10 +57,7 @@ function _setOnChange(options, value, action, opts = {}) {
         args: arguments,
         changeEvent,
         action,
-        valuePropName,
-        beforeChange,
-        afterChange,
-        reverse
+        valuePropName
       }, compInstance);
     };
   }
@@ -86,6 +66,10 @@ function _setOnChange(options, value, action, opts = {}) {
 function _isBind(props) {
   const arg = props.arguments[0];
   return arg === 'bind' || arg === 'model';
+}
+
+function _useAction(modifiers) {
+  return modifiers ? modifiers.indexOf('action') >= 0 : false;
 }
 
 registerExtension('mobx', options => {
@@ -98,17 +82,7 @@ registerExtension('mobx', options => {
     return ret;
   }
 
-  let value = ret,
-    action = false,
-    opts = ret._njOptions;
-  if (opts) {
-    value = ret.val;
-    if (opts.action != null) {
-      action = opts.action;
-    }
-  }
-
-  _setOnChange(options, value, action, opts);
+  _setOnChange(options, ret, _useAction(props.modifiers));
 }, extensionConfigs['mobx']);
 
 registerExtension('mst', options => {
@@ -121,15 +95,5 @@ registerExtension('mst', options => {
     return ret;
   }
 
-  let value = ret,
-    action = true,
-    opts = ret._njOptions;
-  if (opts) {
-    value = ret.val;
-    if (opts.action != null) {
-      action = opts.action;
-    }
-  }
-
-  _setOnChange(options, value, action, opts);
+  _setOnChange(options, ret, true);
 }, extensionConfigs['mst']);

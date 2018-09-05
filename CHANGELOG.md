@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v0.4.4] 2018.09.05
+
+* 🌟 `mobx-model`更名为`mobx-bind`(mobx-model仍可用)，功能优化及代码简化。
+
 ## [v0.4.3] 2018.08.10
 
 * 🌟 `mobx-model`支持[babel-plugin-nornj-in-jsx](https://github.com/joe-sky/nornj/blob/master/packages/babel-plugin-nornj-in-jsx/README.md)插件。
