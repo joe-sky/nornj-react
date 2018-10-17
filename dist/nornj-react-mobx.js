@@ -128,8 +128,6 @@ var _extensionConfig = __webpack_require__(5);
 
 var _extensionConfig2 = _interopRequireDefault(_extensionConfig);
 
-var _utils = __webpack_require__(6);
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
@@ -137,7 +135,7 @@ function _interopRequireDefault(obj) {
 function _setValue(value, params, compInstance) {
   var _value = params.reverse ? !params.value.val : value;
   if (params.action) {
-    params.value._njCtx['set' + (0, _utils.capitalize)(params.value.prop)](_value);
+    params.value._njCtx['set' + _nornj2.default.capitalize(params.value.prop)](_value, params.args);
   } else {
     params.value._njCtx[params.value.prop] = _value;
   }
@@ -252,20 +250,6 @@ module.exports = {
     addSet: true,
     useExpressionInJsx: true
   }
-};
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var capitalize = exports.capitalize = function capitalize(str) {
-  return str[0].toUpperCase() + str.substr(1);
 };
 
 /***/ })

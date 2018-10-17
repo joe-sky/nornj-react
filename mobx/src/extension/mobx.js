@@ -1,12 +1,11 @@
 import nj, { registerExtension } from 'nornj';
 import { toJS } from 'mobx';
 import extensionConfigs from '../../extensionConfig';
-import { capitalize } from '../../../lib/utils';
 
 function _setValue(value, params, compInstance) {
   const _value = params.reverse ? !params.value.val : value;
   if (params.action) {
-    params.value._njCtx[`set${capitalize(params.value.prop)}`](_value);
+    params.value._njCtx[`set${nj.capitalize(params.value.prop)}`](_value, params.args);
   } else {
     params.value._njCtx[params.value.prop] = _value;
   }

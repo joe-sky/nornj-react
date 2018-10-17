@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v0.4.5] 2018.10.17
+
+* 🌟 改进`mobx-bind`，调用action时增加传事件参数。
+
 ## [v0.4.4] 2018.09.05
 
 * 🌟 `mobx-model`更名为`mobx-bind`(mobx-model仍可用)，功能优化及代码简化。
