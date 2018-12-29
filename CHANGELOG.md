@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v0.4.6] 2018.12.29
+
+* 🌟 增加`nornj-react/mobx/native`。
+
 ## [v0.4.5] 2018.10.17
 
 * 🌟 改进`mobx-bind`，调用action时增加传事件参数。

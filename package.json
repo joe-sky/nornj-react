@@ -1,6 +1,6 @@
 {
   "name": "nornj-react",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "React bindings for template engine NornJ",
   "main": "lib/base.js",
   "files": [
@@ -26,7 +26,7 @@
     "min:redux": "cross-env BABEL_ENV=webpack NODE_ENV=production WITH_EX=redux webpack",
     "min:router": "cross-env BABEL_ENV=webpack NODE_ENV=production WITH_EX=router webpack",
     "lib": "babel src --out-dir lib",
-    "lib:mobx": "babel mobx/base.js --out-file mobx/index.js && babel mobx/src --out-dir mobx/lib",
+    "lib:mobx": "babel mobx/base.js --out-file mobx/index.js && babel mobx/baseNative.js --out-file mobx/native.js && babel mobx/src --out-dir mobx/lib",
     "lib:redux": "babel redux/base.js --out-file redux/index.js ",
     "lib:router": "babel router/base.js --out-file router/index.js ",
     "lib:native": "babel native/base.js --out-file native/index.js ",
