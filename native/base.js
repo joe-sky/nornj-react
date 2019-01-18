@@ -78,7 +78,12 @@ registerComponent({
   SwipeableListView,
   TabBarIOS,
   Text,
-  TextInput,
+  TextInput: {
+    component: TextInput,
+    options: {
+      changeEventName: 'onChangeText'
+    }
+  },
   ToastAndroid,
   ToolbarAndroid,
   Touchable,

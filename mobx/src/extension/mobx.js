@@ -23,8 +23,11 @@ function _setOnChange(options, value, action) {
   } = options;
   const componentConfig = nj.getComponentConfig(tagName) || {};
 
-  if (valuePropName === 'value' && componentConfig.valuePropName != null) {
+  if (componentConfig.valuePropName != null) {
     valuePropName = componentConfig.valuePropName;
+  }
+  if (componentConfig.changeEventName != null) {
+    changeEventName = componentConfig.changeEventName;
   }
 
   let _value = value.val;

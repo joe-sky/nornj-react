@@ -152,8 +152,11 @@ function _setOnChange(options, value, action) {
 
   var componentConfig = _nornj2.default.getComponentConfig(tagName) || {};
 
-  if (valuePropName === 'value' && componentConfig.valuePropName != null) {
+  if (componentConfig.valuePropName != null) {
     valuePropName = componentConfig.valuePropName;
+  }
+  if (componentConfig.changeEventName != null) {
+    changeEventName = componentConfig.changeEventName;
   }
 
   var _value = value.val;

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v0.4.7] 2019.01.18
+
+* 🌟 `mobx-bind`指令支持react-native的`TextInput`组件。
+
 ## [v0.4.6] 2018.12.29
 
 * 🌟 增加`nornj-react/mobx/native`。
