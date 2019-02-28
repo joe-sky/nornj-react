@@ -7,7 +7,7 @@
 		exports["NornJReact"] = factory(require("nornj"), require("react"), require("react-dom"));
 	else
 		root["NornJReact"] = factory(root["nj"], root["React"], root["ReactDOM"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_8__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_9__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -91,6 +91,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+
+/***/ }),
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -98,11 +104,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nornj__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nornj___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_nornj__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__registerTmpl__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__docReady__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__renderTmplTag__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__docReady__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__renderTmplTag__ = __webpack_require__(8);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "renderTmplTag", function() { return __WEBPACK_IMPORTED_MODULE_5__renderTmplTag__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "registerTmpl", function() { return __WEBPACK_IMPORTED_MODULE_3__registerTmpl__["a"]; });
 
@@ -151,10 +157,10 @@ _global.NornJReact = _global.njr = __WEBPACK_IMPORTED_MODULE_0__core__["a" /* de
 
 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */]);
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports) {
 
 var g;
@@ -181,12 +187,6 @@ module.exports = g;
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
-
-/***/ }),
 /* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -194,6 +194,19 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
 /* harmony export (immutable) */ __webpack_exports__["a"] = registerTmpl;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_nornj__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_nornj___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_nornj__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(6);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
 
 
 //注册模板装饰器
@@ -205,10 +218,10 @@ function registerTmpl(name, template, cache, components) {
     name = name.name;
   }
 
-  return function (target) {
+  return function (component) {
     //注册组件
     if (name != null) {
-      __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.registerComponent(name, target);
+      __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.registerComponent(name, component);
     }
 
     //从标签的innerHTML获取模板
@@ -217,16 +230,77 @@ function registerTmpl(name, template, cache, components) {
     }
 
     //创建模板函数
+    var tmplFn = void 0;
     if (template) {
-      target.prototype.template = (template._njTmpl ? template : __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.compileH(template, cache ? name : null)).bind({ _njIcp: __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.isArray(components) ? components : [components] });
+      tmplFn = (template._njTmpl ? template : __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.compileH(template, cache ? name : null)).bind({
+        _njIcp: __WEBPACK_IMPORTED_MODULE_0_nornj___default.a.isArray(components) ? components : [components]
+      });
     }
 
-    return target;
+    var Wrapper = function (_Component) {
+      _inherits(Wrapper, _Component);
+
+      function Wrapper() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, Wrapper);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Wrapper.__proto__ || Object.getPrototypeOf(Wrapper)).call.apply(_ref, [this].concat(args))), _this), _this.getRef = function (instance) {
+          _this.wrappedInstance = instance;
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+      }
+
+      _createClass(Wrapper, [{
+        key: 'render',
+        value: function render() {
+          var newProps = {};
+          for (var key in this.props) {
+            if (this.props.hasOwnProperty(key)) {
+              newProps[key] = this.props[key];
+            }
+          }
+
+          if (!Object(__WEBPACK_IMPORTED_MODULE_2__utils__["a" /* isStateless */])(component)) {
+            newProps.ref = this.getRef;
+          }
+          if (tmplFn) {
+            newProps.template = tmplFn;
+          }
+
+          return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(component, newProps);
+        }
+      }]);
+
+      return Wrapper;
+    }(__WEBPACK_IMPORTED_MODULE_1_react__["Component"]);
+
+    Wrapper.displayName = component.displayName;
+
+
+    return Wrapper;
   };
 }
 
 /***/ }),
 /* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = isStateless;
+function isStateless(component) {
+  // `function() {}` has prototype, but `() => {}` doesn't
+  // `() => {}` via Babel has prototype too.
+  return !(component.prototype && component.prototype.render);
+}
+
+/***/ }),
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -240,7 +314,7 @@ function registerTmpl(name, template, cache, components) {
 });
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -250,7 +324,7 @@ function registerTmpl(name, template, cache, components) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nornj__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nornj___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_nornj__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
 
 
@@ -311,10 +385,10 @@ __WEBPACK_IMPORTED_MODULE_1_nornj___default.a.assign(__WEBPACK_IMPORTED_MODULE_0
 });
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_9__;
 
 /***/ })
 /******/ ]);

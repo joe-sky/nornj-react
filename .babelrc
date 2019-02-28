@@ -1,11 +1,24 @@
 {
   "env": {
     "development": {
-      "presets": ["env"]
+      "presets": [
+        "env"
+      ],
+      "plugins": [
+        "transform-class-properties"
+      ]
     },
     "webpack": {
       "presets": [
-        ["env", { "modules": false }]
+        [
+          "env",
+          {
+            "modules": false
+          }
+        ]
+      ],
+      "plugins": [
+        "transform-class-properties"
       ]
     }
   }

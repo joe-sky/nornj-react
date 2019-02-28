@@ -1,4 +1,6 @@
 ﻿import nj from 'nornj';
+import React, { Component } from 'react';
+import { isStateless } from './utils';
 
 //注册模板装饰器
 export default function registerTmpl(name, template, cache, components) {
@@ -9,10 +11,10 @@ export default function registerTmpl(name, template, cache, components) {
     name = name.name;
   }
 
-  return function(target) {
+  return function (component) {
     //注册组件
     if (name != null) {
-      nj.registerComponent(name, target);
+      nj.registerComponent(name, component);
     }
 
     //从标签的innerHTML获取模板
@@ -21,10 +23,39 @@ export default function registerTmpl(name, template, cache, components) {
     }
 
     //创建模板函数
+    let tmplFn;
     if (template) {
-      target.prototype.template = (template._njTmpl ? template : nj.compileH(template, cache ? name : null)).bind({ _njIcp: nj.isArray(components) ? components : [components] });
+      tmplFn = (template._njTmpl ? template : nj.compileH(template, cache ? name : null)).bind({
+        _njIcp: nj.isArray(components) ? components : [components]
+      });
     }
 
-    return target;
+    class Wrapper extends Component {
+      static displayName = component.displayName;
+
+      getRef = instance => {
+        this.wrappedInstance = instance;
+      };
+
+      render() {
+        let newProps = {};
+        for (let key in this.props) {
+          if (this.props.hasOwnProperty(key)) {
+            newProps[key] = this.props[key];
+          }
+        }
+
+        if (!isStateless(component)) {
+          newProps.ref = this.getRef;
+        }
+        if (tmplFn) {
+          newProps.template = tmplFn;
+        }
+
+        return React.createElement(component, newProps);
+      }
+    }
+
+    return Wrapper;
   };
 }

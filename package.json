@@ -1,6 +1,6 @@
 {
   "name": "nornj-react",
-  "version": "0.4.7",
+  "version": "5.0.0-alpha.2",
   "description": "React bindings for template engine NornJ",
   "main": "lib/base.js",
   "files": [
@@ -51,6 +51,7 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-loader": "^7.1.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "babel-register": "^6.22.0",
     "cross-env": "^5.1.0",
@@ -60,7 +61,7 @@
     "gulp-notify": "^2.2.0",
     "jsdom": "^8.1.0",
     "lodash": "^4.13.1",
-    "nornj": "^0.4.1",
+    "nornj": "^5.0.0-alpha.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "webpack": "^3.8.1",
