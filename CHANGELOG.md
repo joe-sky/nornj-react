@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v5.0.0-alpha.3] 2019.03.07
+
+* 🌟 打包工具由`webpack`改为`rollup`。
+
 ## [v0.4.7] 2019.01.18
 
 * 🌟 `mobx-bind`指令支持react-native的`TextInput`组件。
