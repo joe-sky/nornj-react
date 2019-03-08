@@ -1,4 +1,1 @@
-﻿export default {
-  initialData: null,
-  initialDelimiters: null
-};
+﻿export default {};

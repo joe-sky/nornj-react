@@ -24,7 +24,6 @@ switch (withEx) {
     indexEntry = './router/base.js';
     break;
 }
-console.log(libName);
 const config = {
   input: indexEntry,
   output: {

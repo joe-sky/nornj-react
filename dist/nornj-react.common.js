@@ -1,5 +1,5 @@
 /*!
-* NornJ-React v5.0.0-alpha.2
+* NornJ-React v5.0.0-alpha.6
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
@@ -12,12 +12,8 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var nj = _interopDefault(require('nornj'));
 var React = require('react');
 var React__default = _interopDefault(React);
-var ReactDOM = _interopDefault(require('react-dom'));
 
-var njr = {
-  initialData: null,
-  initialDelimiters: null
-};
+var njr = {};
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -103,16 +99,9 @@ function registerTmpl(name, template, cache, components) {
   }
 
   return function (component) {
-    //注册组件
-    if (name != null) {
-      nj.registerComponent(name, component);
-    } //从标签的innerHTML获取模板
-
-
     if (/^#{1}/.test(template)) {
       template = document.querySelector(template).innerHTML;
-    } //创建模板函数
-
+    }
 
     var tmplFn;
 
@@ -174,72 +163,18 @@ function registerTmpl(name, template, cache, components) {
     }(React.Component);
 
     Wrapper.displayName = component.displayName;
+
+    if (name != null) {
+      nj.registerComponent(name, Wrapper);
+    }
+
     return Wrapper;
   };
 }
 
-function docReady (callback) {
-  var doc = document;
-
-  if (doc.addEventListener) {
-    doc.addEventListener('DOMContentLoaded', callback, false);
-  } else {
-    self.attachEvent('onload', callback);
-  }
-}
-
-function renderTmplTag() {
-  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var data = options.data,
-      selector = options.selector,
-      target = options.target,
-      isAuto = options.isAuto,
-      delimiters = options.delimiters;
-
-  if (!selector) {
-    selector = 'script[type="text/nornj"]' + (isAuto ? '[data-auto]' : '');
-  }
-
-  var tags = document.querySelectorAll(selector),
-      ret = [];
-  nj.each(tags, function (tag) {
-    var tmplFn = nj.compileH(tag.innerHTML, tag.id, null, delimiters);
-    var targetNode;
-
-    if (target == null) {
-      target = tag.getAttribute('data-target');
-    }
-
-    if (target) {
-      if (nj.isString(target)) {
-        targetNode = document.querySelector(target);
-      } else {
-        targetNode = target;
-      }
-    } else {
-      targetNode = tag.parentNode;
-    }
-
-    ret.push(ReactDOM.render(nj.isArray(data) ? tmplFn.apply(null, data) : tmplFn(data), targetNode));
-  }, null, true);
-  return ret;
-} //Set initial data for inline component
-
-function setInitialData(data) {
-  njr.initialData = data;
-}
-function setInitialDelimiters(delimiters) {
-  njr.initialDelimiters = delimiters;
-}
-nj.assign(njr, {
-  renderTmplTag: renderTmplTag,
-  setInitialData: setInitialData,
-  setInitialDelimiters: setInitialDelimiters
-});
-
 nj.assign(njr, {
   registerTmpl: registerTmpl,
-  docReady: docReady
+  bindTemplate: registerTmpl
 }); //Set createElement function for NornJ
 
 nj.config({
@@ -257,24 +192,10 @@ var _defaultCfg = {
     componentConfig = nj.componentConfig;
 componentConfig.input = componentConfig.select = componentConfig.textarea = _defaultCfg;
 
-var _global;
-
-if (typeof self !== 'undefined') {
-  _global = self; //Initial render templates
-
-  docReady(function () {
-    return njr.renderTmplTag({
-      data: njr.initialData,
-      delimiters: njr.initialDelimiters,
-      isAuto: true
-    });
-  });
-} else {
-  _global = global;
-}
+var _global = typeof self !== 'undefined' ? self : global;
 
 _global.NornJReact = _global.njr = njr;
 
 exports.registerTmpl = registerTmpl;
+exports.bindTemplate = registerTmpl;
 exports.default = njr;
-exports.renderTmplTag = renderTmplTag;

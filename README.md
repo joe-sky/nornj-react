@@ -1,6 +1,6 @@
 # NornJ-React
 
-React bindings for template engine NornJ
+React bindings for NornJ template engine.
 
 [![NPM Version][npm-image]][npm-url]
 [![NPM Downloads][downloads-image]][npm-url]

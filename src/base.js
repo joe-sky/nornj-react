@@ -2,11 +2,10 @@
 import nj from 'nornj';
 import React from 'react';
 import registerTmpl from './registerTmpl';
-import docReady from './docReady';
 
 nj.assign(njr, {
   registerTmpl,
-  docReady
+  bindTemplate: registerTmpl
 });
 
 //Set createElement function for NornJ
@@ -24,25 +23,11 @@ const _defaultCfg = { hasEventObject: true },
   componentConfig = nj.componentConfig;
 componentConfig.input = componentConfig.select = componentConfig.textarea = _defaultCfg;
 
-let _global;
-if (typeof self !== 'undefined') {
-  _global = self;
-
-  //Initial render templates
-  docReady(() => njr.renderTmplTag({
-    data: njr.initialData,
-    delimiters: njr.initialDelimiters,
-    isAuto: true
-  }));
-} else {
-  _global = global;
-}
+let _global = typeof self !== 'undefined' ? self : global;
 _global.NornJReact = _global.njr = njr;
 
 export {
-  renderTmplTag
-} from './renderTmplTag';
-export {
-  registerTmpl
+  registerTmpl,
+  registerTmpl as bindTemplate
 };
 export default njr;

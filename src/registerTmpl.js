@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { isStateless } from './utils';
 
-//注册模板装饰器
 export default function registerTmpl(name, template, cache, components) {
   if (nj.isObject(name)) {
     template = name.template;
@@ -12,17 +11,10 @@ export default function registerTmpl(name, template, cache, components) {
   }
 
   return function (component) {
-    //注册组件
-    if (name != null) {
-      nj.registerComponent(name, component);
-    }
-
-    //从标签的innerHTML获取模板
     if (/^#{1}/.test(template)) {
       template = document.querySelector(template).innerHTML;
     }
 
-    //创建模板函数
     let tmplFn;
     if (template) {
       tmplFn = (template._njTmpl ? template : nj.compileH(template, cache ? name : null)).bind({
@@ -36,6 +28,10 @@ export default function registerTmpl(name, template, cache, components) {
       getRef = instance => {
         this.wrappedInstance = instance;
       };
+
+      // componentDidMount() {
+      //   console.log(1);
+      // }
 
       render() {
         let newProps = {};
@@ -54,6 +50,10 @@ export default function registerTmpl(name, template, cache, components) {
 
         return React.createElement(component, newProps);
       }
+    }
+
+    if (name != null) {
+      nj.registerComponent(name, Wrapper);
     }
 
     return Wrapper;
