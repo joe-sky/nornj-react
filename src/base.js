@@ -1,11 +1,13 @@
 ﻿import njr from './core';
 import nj from 'nornj';
 import React from 'react';
-import registerTmpl from './registerTmpl';
+import bindTemplate, { bindTemplateName } from './bindTemplate';
+import './extension/debounce';
 
 nj.assign(njr, {
-  registerTmpl,
-  bindTemplate: registerTmpl
+  bindTemplate,
+  bindTemplateName,
+  registerTmpl: bindTemplateName
 });
 
 //Set createElement function for NornJ
@@ -27,7 +29,8 @@ let _global = typeof self !== 'undefined' ? self : global;
 _global.NornJReact = _global.njr = njr;
 
 export {
-  registerTmpl,
-  registerTmpl as bindTemplate
+  bindTemplate,
+  bindTemplateName,
+  bindTemplateName as registerTmpl
 };
 export default njr;

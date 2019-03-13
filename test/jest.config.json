@@ -2,6 +2,7 @@
   "rootDir": "../",
   "collectCoverageFrom": ["src/**/*.{js,jsx}"],
   "setupFiles": ["<rootDir>/test/setup.js"],
+  "setupFilesAfterEnv": ["<rootDir>/node_modules/jest-enzyme/lib/index.js"],
   "testMatch": ["<rootDir>/test/**/*.(spec|test).{js,jsx}"],
   "testEnvironment": "enzyme",
   "testURL": "http://localhost:8080",

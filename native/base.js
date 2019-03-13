@@ -1,6 +1,7 @@
 ﻿import njr from '../lib/core';
 import nj, { registerComponent } from 'nornj';
-import registerTmpl from '../lib/registerTmpl';
+import bindTemplate, { bindTemplateName } from '../lib/bindTemplate';
+import '../lib/extension/debounce';
 import React from 'react';
 import {
   AccessibilityInfo,
@@ -98,7 +99,9 @@ registerComponent({
 });
 
 nj.assign(njr, {
-  registerTmpl
+  bindTemplate,
+  bindTemplateName,
+  registerTmpl: bindTemplateName
 });
 
 //Set createElement function for NornJ
@@ -116,6 +119,8 @@ let _global = typeof self !== 'undefined' ? self : global;
 _global.NornJReact = _global.njr = njr;
 
 export {
-  registerTmpl
+  bindTemplate,
+  bindTemplateName,
+  bindTemplateName as registerTmpl
 };
 export default njr;

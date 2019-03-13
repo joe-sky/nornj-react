@@ -1,9 +1,9 @@
 /*!
-* NornJ-React v5.0.0-alpha.6
+* NornJ-React v5.0.0-beta.1
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
-import nj from 'nornj';
+import nj, { registerExtension } from 'nornj';
 import React, { Component } from 'react';
 
 var njr = {};
@@ -82,92 +82,150 @@ function isStateless(component) {
   // `() => {}` via Babel has prototype too.
   return !(component.prototype && component.prototype.render);
 }
+function isFunction(obj) {
+  return typeof obj == 'function' || false;
+}
+nj.assign(nj, {
+  isStateless: isStateless,
+  isFunction: isFunction
+});
 
-function registerTmpl(name, template, cache, components) {
-  if (nj.isObject(name)) {
+var REGEX_ID_SELECTOR = /^#{1}/;
+
+function _registerComponent(name, component) {
+  if (name != null) {
+    nj.registerComponent(name, component);
+  }
+}
+
+function _createWrapper(name, component, tmplFn) {
+  var Wrapper =
+  /*#__PURE__*/
+  function (_Component) {
+    _inherits(Wrapper, _Component);
+
+    function Wrapper() {
+      var _getPrototypeOf2;
+
+      var _this;
+
+      _classCallCheck(this, Wrapper);
+
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Wrapper)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+      _this.getRef = function (instance) {
+        _this.wrappedInstance = instance;
+      };
+
+      return _this;
+    }
+
+    _createClass(Wrapper, [{
+      key: "render",
+      value: function render() {
+        var newProps = {};
+
+        for (var key in this.props) {
+          if (this.props.hasOwnProperty(key)) {
+            newProps[key] = this.props[key];
+          }
+        }
+
+        if (!isStateless(component)) {
+          newProps.ref = this.getRef;
+        }
+
+        if (tmplFn) {
+          newProps.template = tmplFn;
+        }
+
+        return React.createElement(component, newProps);
+      }
+    }]);
+
+    return Wrapper;
+  }(Component);
+
+  Wrapper.displayName = component.displayName;
+  name && _registerComponent(name, Wrapper);
+  Wrapper.wrappedComponent = component;
+  return Wrapper;
+}
+
+function bindTemplate(name, template, components) {
+  if (isFunction(name)) {
+    return _createWrapper(name.name, name);
+  } else if (nj.isObject(name)) {
     template = name.template;
-    cache = name.cache;
     components = name.components;
     name = name.name;
   }
 
   return function (component) {
-    if (/^#{1}/.test(template)) {
+    if (template != null && REGEX_ID_SELECTOR.test(template)) {
       template = document.querySelector(template).innerHTML;
     }
 
     var tmplFn;
 
     if (template) {
-      tmplFn = (template._njTmpl ? template : nj.compileH(template, cache ? name : null)).bind({
+      tmplFn = (template._njTmpl ? template : nj.compileH(template)).bind({
         _njIcp: nj.isArray(components) ? components : [components]
       });
     }
 
-    var Wrapper =
-    /*#__PURE__*/
-    function (_Component) {
-      _inherits(Wrapper, _Component);
+    return _createWrapper(name || component.name, component, tmplFn);
+  };
+}
+function bindTemplateName(name) {
+  if (nj.isString(name)) {
+    return function (component) {
+      _registerComponent(name, component);
 
-      function Wrapper() {
-        var _getPrototypeOf2;
+      return component;
+    };
+  } else {
+    name.name && _registerComponent(name.name, name);
+    return name;
+  }
+}
 
-        var _this;
+function _debounce(fn, delay) {
+  var timeoutID = null;
+  return function () {
+    var _this = this,
+        _arguments = arguments;
 
-        _classCallCheck(this, Wrapper);
-
-        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-          args[_key] = arguments[_key];
-        }
-
-        _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Wrapper)).call.apply(_getPrototypeOf2, [this].concat(args)));
-
-        _this.getRef = function (instance) {
-          _this.wrappedInstance = instance;
-        };
-
-        return _this;
-      }
-
-      _createClass(Wrapper, [{
-        key: "render",
-        value: function render() {
-          var newProps = {};
-
-          for (var key in this.props) {
-            if (this.props.hasOwnProperty(key)) {
-              newProps[key] = this.props[key];
-            }
-          }
-
-          if (!isStateless(component)) {
-            newProps.ref = this.getRef;
-          }
-
-          if (tmplFn) {
-            newProps.template = tmplFn;
-          }
-
-          return React.createElement(component, newProps);
-        }
-      }]);
-
-      return Wrapper;
-    }(Component);
-
-    Wrapper.displayName = component.displayName;
-
-    if (name != null) {
-      nj.registerComponent(name, Wrapper);
-    }
-
-    return Wrapper;
+    clearTimeout(timeoutID);
+    timeoutID = setTimeout(function () {
+      fn.apply(_this, _arguments);
+    }, delay);
   };
 }
 
+registerExtension({
+  debounce: function debounce(options) {
+    var tagName = options.tagName,
+        attrs = options.attrs,
+        data = options.context.data;
+    var componentConfig = nj.getComponentConfig(tagName) || {};
+    var changeEventName = componentConfig.changeEventName || 'onChange';
+    var compInstance = data[data.length - 1];
+    var evtFn = attrs[changeEventName];
+    attrs[changeEventName] = _debounce(function () {
+      evtFn.apply(compInstance, arguments);
+    }, options.result() || 100);
+  }
+});
+
 nj.assign(njr, {
-  registerTmpl: registerTmpl,
-  bindTemplate: registerTmpl
+  bindTemplate: bindTemplate,
+  bindTemplateName: bindTemplateName,
+  registerTmpl: bindTemplateName
 }); //Set createElement function for NornJ
 
 nj.config({
@@ -190,4 +248,4 @@ var _global = typeof self !== 'undefined' ? self : global;
 _global.NornJReact = _global.njr = njr;
 
 export default njr;
-export { registerTmpl, registerTmpl as bindTemplate };
+export { bindTemplate, bindTemplateName, bindTemplateName as registerTmpl };
