@@ -1,5 +1,5 @@
 /*!
-* NornJ-React-Redux v5.0.0-beta.1
+* NornJ-React-Redux v5.0.0-beta.3
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
