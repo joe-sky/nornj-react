@@ -1,8 +1,12 @@
 # CHANGELOG
 
+## [v5.0.0-beta.5] 2019.03.15
+
+* 🌟 增加注册[echarts-for-react](https://github.com/hustcc/echarts-for-react)组件到`NornJ`模板。
+
 ## [v5.0.0-beta.1] 2019.03.13
 
-* 🌟 增加`ant-design`组件。
+* 🌟 增加注册[ant-design](https://github.com/ant-design/ant-design)组件到`NornJ`模板。
 
 ## [v5.0.0-alpha.3] 2019.03.07
 

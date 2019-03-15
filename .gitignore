@@ -8,3 +8,5 @@
 /redux/index.js
 /server/index.js
 /antd/lib/
+/echarts/index.js
+/echarts/core.js

@@ -16,7 +16,7 @@ npm install nornj-react
 
 ### 使用bindTemplate为React组件注册模板
 
-`bindTemplate`采用装饰器的形式，可以使NornJ用更简洁的语法配合React使用。
+`bindTemplate`采用装饰器的形式，可以使`NornJ`用更简洁的语法配合React使用。
 
 ```js
 import { Component } from 'react';
