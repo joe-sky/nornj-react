@@ -9,14 +9,14 @@ import '../antd/card';
 import '../antd/cascader';
 import '../antd/checkbox';
 import '../antd/collapse';
-import '../antd/datePicker';
+import '../antd/date-picker';
 import '../antd/form';
 import '../antd/icon';
 import '../antd/input';
 import '../antd/menu';
-import Message from '../antd/message';
+import message from '../antd/message';
 import '../antd/modal';
-import Notification from '../antd/notification';
+import notification from '../antd/notification';
 import '../antd/pagination';
 import '../antd/popover';
 import '../antd/progress';
@@ -29,7 +29,7 @@ import '../antd/tabs';
 import '../antd/tooltip';
 import '../antd/transfer';
 import '../antd/tree';
-import '../antd/treeSelect';
+import '../antd/tree-select';
 import '../antd/upload';
 
 describe('Antd spec', function () {
@@ -160,9 +160,9 @@ describe('Antd spec', function () {
   });
 
   describe('default', () => {
-    const spy = jest.spyOn(Message, 'info');
+    const spy = jest.spyOn(message, 'info');
 
-    Message.info('This is a normal message');
+    message.info('This is a normal message');
 
     it('should be called', () => {
       expect(spy).toHaveBeenCalled();
@@ -178,9 +178,9 @@ describe('Antd spec', function () {
   });
 
   describe('default', () => {
-    const spy = jest.spyOn(Notification, 'info');
+    const spy = jest.spyOn(notification, 'info');
 
-    Notification.info({
+    notification.info({
       message: 'Notification Title',
       description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
     });
