@@ -1,6 +1,6 @@
 ﻿import njr from '../lib/core';
 import nj, { registerComponent } from 'nornj';
-import bindTemplate, { bindTemplateName } from '../lib/bindTemplate';
+import bindTemplate from '../lib/bindTemplate';
 import '../lib/extension/debounce';
 import React from 'react';
 import {
@@ -100,8 +100,7 @@ registerComponent({
 
 nj.assign(njr, {
   bindTemplate,
-  bindTemplateName,
-  registerTmpl: bindTemplateName
+  registerTmpl: bindTemplate
 });
 
 //Set createElement function for NornJ
@@ -120,7 +119,7 @@ _global.NornJReact = _global.njr = njr;
 
 export {
   bindTemplate,
-  bindTemplateName,
-  bindTemplateName as registerTmpl
+  bindTemplate as bindTemplateName,
+  bindTemplate as registerTmpl
 };
 export default njr;

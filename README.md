@@ -6,51 +6,63 @@ React bindings for NornJ template engine.
 [![NPM Downloads][downloads-image]][npm-url]
 [![](https://img.shields.io/bundlephobia/minzip/nornj-react@next.svg?style=flat)](https://bundlephobia.com/result?p=nornj-react@next)
 
-### 安装
-
-使用npm安装:
+### Install
 
 ```sh
 npm install nornj-react
 ```
 
-### 使用bindTemplate为React组件注册模板
+### bindTemplate
 
-`bindTemplate`采用装饰器的形式，可以使`NornJ`用更简洁的语法配合React使用。
+You can use `bindTemplate` to register React components to `NornJ` template engine.
+
+* Class components
 
 ```js
-import { Component } from 'react';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import nj from 'nornj';
 import { bindTemplate } from 'nornj-react';
-import styled from 'styled-components';
 
-@bindTemplate({
-  name: 'TestComponent',  //可传入组件名，相当于调用了nj.registerComponent注册组件
-  template: `             <!--可传入模板，纯字符串和以nj为前置标签的模板字符串都可以-->
-    <Container id=test1>
-      this the test demo{no}.
-      <i>test{no}</i>
-    </Container>
-  `,
-  components: {           //可传入局部组件，如本例配合styled-components组件使用
-    Container: styled.div `
-      background-color: #fff;
-    `
-  }
-})
+@bindTemplate
 class TestComponent extends Component {
   render() {
-    return this.props.template({ no: 1 });  //使用this.props.template方法渲染模板，该方法为标准的nj模板函数
+    return <i>{this.props.children}</i>;
   }
 }
+
+ReactDOM.render(nj`<TestComponent>test</TestComponent>`(), document.body);
 ```
 
-另外，`bindTemplate`装饰器也可以这样更简化地传参数：
+In addition, `bindTemplate` also support a `name` parameter:
 
 ```js
-@bindTemplate(/*参数依次为：组件名、模板、局部组件*/
-  'TestComponent',
-  '<div id=test1>...</div>'
-})
+...
+import { bindTemplate } from 'nornj-react';
+
+@bindTemplate('test-Component')
+class TestComponent extends Component {
+  render() {
+    return <i>{this.props.children}</i>;
+  }
+}
+
+ReactDOM.render(nj`<test-Component>test</test-Component>`(), document.body);
+```
+
+* Function components
+
+```js
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import nj from 'nornj';
+import { bindTemplate } from 'nornj-react';
+
+const TestComponent = bindTemplate('test-Component')(props => (
+  <i>{props.children}</i>
+));
+
+ReactDOM.render(nj`<test-Component>test</test-Component>`(), document.body);
 ```
 
 ### License

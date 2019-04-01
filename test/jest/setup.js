@@ -1,8 +1,8 @@
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { JSDOM } from 'jsdom';
-import '../src/base';
-import '../mobx/base';
+import '../../src/base';
+import '../../mobx/base';
 
 const jsdom = new JSDOM('<!doctype html><html><body></body></html>');
 const { window } = jsdom;
