@@ -67,7 +67,7 @@ function _setOnChange(options, value, action) {
 
 function _isBind(props) {
   const arg = props.arguments[0];
-  return arg === 'bind' || arg === 'model';
+  return arg.name === 'bind' || arg.name === 'model';
 }
 
 function _useAction(modifiers) {
@@ -79,7 +79,7 @@ registerExtension('mobx', options => {
   if (!props || !_isBind(props)) {
     return;
   }
-  const ret = options.result();
+  const ret = options.value();
   if (ret == null) {
     return ret;
   }
@@ -92,7 +92,7 @@ registerExtension('mst', options => {
   if (!props || !_isBind(props)) {
     return;
   }
-  const ret = options.result();
+  const ret = options.value();
   if (ret == null) {
     return ret;
   }

@@ -1,5 +1,5 @@
 /*!
-* NornJ-React-Mobx v5.0.0-beta.8
+* NornJ-React-Mobx v5.0.0-rc.1
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
@@ -113,7 +113,7 @@
 
   function _isBind(props) {
     var arg = props.arguments[0];
-    return arg === 'bind' || arg === 'model';
+    return arg.name === 'bind' || arg.name === 'model';
   }
 
   function _useAction(modifiers) {
@@ -127,7 +127,7 @@
       return;
     }
 
-    var ret = options.result();
+    var ret = options.value();
 
     if (ret == null) {
       return ret;
@@ -142,7 +142,7 @@
       return;
     }
 
-    var ret = options.result();
+    var ret = options.value();
 
     if (ret == null) {
       return ret;

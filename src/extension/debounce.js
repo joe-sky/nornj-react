@@ -1,30 +1,74 @@
 import nj, { registerExtension } from 'nornj';
+import React, { Component } from 'react';
+import { debounce } from '../utils';
 
-function debounce(fn, delay) {
-  let timeoutID = null;
+class DebounceWrap extends Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
 
-  return function () {
-    clearTimeout(timeoutID);
-    timeoutID = setTimeout(() => {
-      fn.apply(this, arguments);
-    }, delay);
+    const {
+      directiveOptions: {
+        tagName,
+        context: { data },
+        props: directiveProps,
+        value
+      }
+    } = this.props;
+    const args = directiveProps && directiveProps.arguments;
+
+    this.componentConfig = nj.getComponentConfig(tagName) || {};
+    this.changeEventName = (args && args[0].name) || this.componentConfig.changeEventName || 'onChange';
+    this.ctxInstance = data[data.length - 1];
+    this.emitChangeDebounced = debounce(this.emitChange, value() || 100);
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      directiveOptions: { value: prevValue }
+    } = prevProps;
+    const {
+      directiveOptions: { value }
+    } = this.props;
+
+    const newValue = value();
+    if (newValue != null && newValue != prevValue()) {
+      this.emitChangeDebounced = debounce(this.emitChange, newValue);
+    }
+  }
+
+  handleChange(e) {
+    // React pools events, so we read the value before debounce.
+    // Alternately we could call `event.persist()` and pass the entire event.
+    // For more info see reactjs.org/docs/events.html#event-pooling
+    e && e.persist && e.persist();
+    this.emitChangeDebounced(arguments);
   };
+
+  emitChange = args => {
+    this.props[this.changeEventName].apply(this.ctxInstance, args);
+  };
+
+  render() {
+    const { component, directiveOptions, ...others } = this.props;
+
+    return React.createElement(component, {
+      ...others,
+      ...{
+        [this.changeEventName]: this.handleChange
+      }
+    });
+  }
 }
 
-registerExtension({
-  debounce: options => {
-    const {
-      tagName,
-      attrs,
-      context: { data }
-    } = options;
-    const componentConfig = nj.getComponentConfig(tagName) || {};
-    const changeEventName = componentConfig.changeEventName || 'onChange';
-    const compInstance = data[data.length - 1];
-    const evtFn = attrs[changeEventName];
+registerExtension('debounce', options => {
+  const {
+    tagName,
+    setTagName,
+    attrs
+  } = options;
 
-    attrs[changeEventName] = debounce(function () {
-      evtFn.apply(compInstance, arguments);
-    }, options.result() || 100);
-  }
-});
+  setTagName(DebounceWrap);
+  attrs.component = tagName;
+  attrs.directiveOptions = options;
+}, { onlyGlobal: true, isDirective: true });
