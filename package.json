@@ -79,6 +79,7 @@
     "lodash": "^4.13.1",
     "mobx": "^5.9.0",
     "mobx-react": "^5.4.3",
+    "mobx-react-lite": "^1.2.0",
     "nornj": "^5.0.0-beta.7",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",

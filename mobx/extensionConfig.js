@@ -10,6 +10,6 @@ const configs = {
 };
 
 module.exports = {
-  'mobx': configs,
-  'mst': configs
+  'mobxBind': configs,
+  'mstBind': configs
 };

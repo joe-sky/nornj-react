@@ -10,7 +10,7 @@ class DebounceWrap extends Component {
     const {
       directiveOptions: {
         tagName,
-        context: { data },
+        context: { ctxInstance },
         props: directiveProps,
         value
       }
@@ -19,7 +19,7 @@ class DebounceWrap extends Component {
 
     this.componentConfig = nj.getComponentConfig(tagName) || {};
     this.changeEventName = (args && args[0].name) || this.componentConfig.changeEventName || 'onChange';
-    this.ctxInstance = data[data.length - 1];
+    this.ctxInstance = ctxInstance;
     this.emitChangeDebounced = debounce(this.emitChange, value() || 100);
   }
 

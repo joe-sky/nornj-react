@@ -201,7 +201,7 @@ function (_Component) {
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     var _this$props$directive = _this.props.directiveOptions,
         tagName = _this$props$directive.tagName,
-        data = _this$props$directive.context.data,
+        ctxInstance = _this$props$directive.context.ctxInstance,
         directiveProps = _this$props$directive.props,
         value = _this$props$directive.value;
 
@@ -209,7 +209,7 @@ function (_Component) {
 
     _this.componentConfig = nj.getComponentConfig(tagName) || {};
     _this.changeEventName = _args && _args[0].name || _this.componentConfig.changeEventName || 'onChange';
-    _this.ctxInstance = data[data.length - 1];
+    _this.ctxInstance = ctxInstance;
     _this.emitChangeDebounced = debounce(_this.emitChange, value() || 100);
     return _this;
   }
