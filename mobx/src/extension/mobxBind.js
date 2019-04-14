@@ -91,7 +91,7 @@ registerExtension('mobxBind', options => {
   }
 
   _setOnChange(options, ret, _hasArg(props && props.arguments, 'action'));
-}, extensionConfigs['mobxBind']);
+}, extensionConfigs.mobxBind);
 
 registerExtension('mstBind', options => {
   const ret = options.value();
@@ -100,4 +100,4 @@ registerExtension('mstBind', options => {
   }
 
   _setOnChange(options, ret, true);
-}, extensionConfigs['mstBind']);
+}, extensionConfigs.mstBind);

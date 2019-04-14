@@ -1,4 +1,4 @@
-const configs = {
+const mobxConfig = {
   onlyGlobal: true,
   newContext: false,
   exProps: true,
@@ -10,6 +10,10 @@ const configs = {
 };
 
 module.exports = {
-  'mobxBind': configs,
-  'mstBind': configs
+  mobxBind: mobxConfig,
+  mstBind: mobxConfig,
+  mobxObserver: {
+    onlyGlobal: true,
+    newContext: false
+  }
 };

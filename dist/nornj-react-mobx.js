@@ -1,5 +1,5 @@
 /*!
-* NornJ-React-Mobx v5.0.0-rc.1
+* NornJ-React-Mobx v5.0.0-rc.2
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
@@ -46,7 +46,7 @@
     }
   }
 
-  function _setValue(value, params, compInstance) {
+  function _setValue(value, params, ctxInstance) {
     var _value = params.reverse ? !params.value.val : value;
 
     if (params.action) {
@@ -55,16 +55,21 @@
       params.value._njCtx[params.value.prop] = _value;
     }
 
-    params.changeEvent && params.changeEvent.apply(compInstance, params.args);
+    params.changeEvent && params.changeEvent.apply(ctxInstance, params.args);
   }
+
+  var DEFAULT_VALUE = 'defaultValue';
 
   function _setOnChange(options, value, action) {
     var valuePropName = 'value',
         changeEventName = 'onChange';
     var tagName = options.tagName,
         attrs = options.attrs,
-        data = options.context.data;
+        ctxInstance = options.context.ctxInstance,
+        props = options.props;
     var componentConfig = _nornj.default.getComponentConfig(tagName) || {};
+    var args = props && props.arguments;
+    var defaultValue = _hasArg(args, DEFAULT_VALUE) && DEFAULT_VALUE;
 
     if (componentConfig.valuePropName != null) {
       valuePropName = componentConfig.valuePropName;
@@ -81,11 +86,12 @@
     }
 
     var changeEvent = attrs[changeEventName];
-    var compInstance = data[data.length - 1];
+
+    var _valuePropName = defaultValue || valuePropName;
 
     if (componentConfig.hasEventObject) {
       var targetPropName = componentConfig.targetPropName || 'value';
-      attrs[valuePropName] = _value;
+      attrs[_valuePropName] = _value;
 
       attrs[changeEventName] = function (e) {
         _setValue(e.target[targetPropName], {
@@ -94,10 +100,10 @@
           changeEvent: changeEvent,
           action: action,
           valuePropName: valuePropName
-        }, compInstance);
+        }, ctxInstance);
       };
     } else {
-      attrs[valuePropName] = _value;
+      attrs[_valuePropName] = _value;
 
       attrs[changeEventName] = function (v) {
         _setValue(v, {
@@ -106,42 +112,35 @@
           changeEvent: changeEvent,
           action: action,
           valuePropName: valuePropName
-        }, compInstance);
+        }, ctxInstance);
       };
     }
   }
 
-  function _isBind(props) {
-    var arg = props.arguments[0];
-    return arg.name === 'bind' || arg.name === 'model';
+  function _hasArg(args, name) {
+    var ret;
+    args && args.every(function (arg) {
+      if (arg.name == name) {
+        ret = true;
+        return false;
+      }
+
+      return true;
+    });
+    return ret;
   }
 
-  function _useAction(modifiers) {
-    return modifiers ? modifiers.indexOf('action') >= 0 : false;
-  }
-
-  (0, _nornj.registerExtension)('mobx', function (options) {
+  (0, _nornj.registerExtension)('mobxBind', function (options) {
     var props = options.props;
-
-    if (!props || !_isBind(props)) {
-      return;
-    }
-
     var ret = options.value();
 
     if (ret == null) {
       return ret;
     }
 
-    _setOnChange(options, ret, _useAction(props.modifiers));
-  }, _extensionConfig.default['mobx']);
-  (0, _nornj.registerExtension)('mst', function (options) {
-    var props = options.props;
-
-    if (!props || !_isBind(props)) {
-      return;
-    }
-
+    _setOnChange(options, ret, _hasArg(props && props.arguments, 'action'));
+  }, _extensionConfig.default.mobxBind);
+  (0, _nornj.registerExtension)('mstBind', function (options) {
     var ret = options.value();
 
     if (ret == null) {
@@ -149,7 +148,27 @@
     }
 
     _setOnChange(options, ret, true);
-  }, _extensionConfig.default['mst']);
+  }, _extensionConfig.default.mstBind);
+
+  var _nornj$1 = require("nornj");
+
+  var _react = _interopRequireDefault$1(require("react"));
+
+  var _mobxReactLite = require("mobx-react-lite");
+
+  var _extensionConfig$1 = _interopRequireDefault$1(require("../../extensionConfig"));
+
+  function _interopRequireDefault$1(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  (0, _nornj$1.registerExtension)('mobxObserver', function (options) {
+    return _react.default.createElement(_mobxReactLite.Observer, null, function () {
+      return options.children();
+    });
+  }, _extensionConfig$1.default.mobxObserver);
 
   nornj.registerComponent('mobx-Provider', mobxReact.Provider);
   nornj.registerFilter('toJS', function (v) {

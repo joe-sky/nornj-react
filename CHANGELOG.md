@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v5.0.0-rc.2] 2019.04.14
+
+* 🌟 Add `MobxObserver` tag.
+
 ## [v5.0.0-beta.5] 2019.03.15
 
 * 🌟 增加注册[echarts-for-react](https://github.com/hustcc/echarts-for-react)组件到`NornJ`模板。
