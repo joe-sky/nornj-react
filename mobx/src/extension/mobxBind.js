@@ -20,7 +20,7 @@ function _setOnChange(options, value, action) {
     changeEventName = 'onChange';
   const {
     tagName,
-    attrs,
+    tagProps,
     context: { ctxInstance },
     props
   } = options;
@@ -40,13 +40,13 @@ function _setOnChange(options, value, action) {
     _value = toJS(_value);
   }
 
-  const changeEvent = attrs[changeEventName];
+  const changeEvent = tagProps[changeEventName];
   const _valuePropName = defaultValue || valuePropName;
   if (componentConfig.hasEventObject) {
     const targetPropName = componentConfig.targetPropName || 'value';
 
-    attrs[_valuePropName] = _value;
-    attrs[changeEventName] = function (e) {
+    tagProps[_valuePropName] = _value;
+    tagProps[changeEventName] = function (e) {
       _setValue(e.target[targetPropName], {
         value,
         args: arguments,
@@ -57,8 +57,8 @@ function _setOnChange(options, value, action) {
     };
   }
   else {
-    attrs[_valuePropName] = _value;
-    attrs[changeEventName] = function (v) {
+    tagProps[_valuePropName] = _value;
+    tagProps[changeEventName] = function (v) {
       _setValue(v, {
         value,
         args: arguments,

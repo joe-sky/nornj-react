@@ -1,5 +1,5 @@
 /*!
-* NornJ-React v5.0.0-rc.2
+* NornJ-React v5.0.0-rc.3
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
@@ -252,10 +252,10 @@ function (_Component) {
 registerExtension('debounce', function (options) {
   var tagName = options.tagName,
       setTagName = options.setTagName,
-      attrs = options.attrs;
+      tagProps = options.tagProps;
   setTagName(DebounceWrap);
-  attrs.component = tagName;
-  attrs.directiveOptions = options;
+  tagProps.component = tagName;
+  tagProps.directiveOptions = options;
 }, {
   onlyGlobal: true,
   isDirective: true

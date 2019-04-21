@@ -1,5 +1,5 @@
 /*!
-* NornJ-React-Mobx v5.0.0-rc.2
+* NornJ-React-Mobx v5.0.0-rc.3
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
@@ -64,7 +64,7 @@
     var valuePropName = 'value',
         changeEventName = 'onChange';
     var tagName = options.tagName,
-        attrs = options.attrs,
+        tagProps = options.tagProps,
         ctxInstance = options.context.ctxInstance,
         props = options.props;
     var componentConfig = _nornj.default.getComponentConfig(tagName) || {};
@@ -85,15 +85,15 @@
       _value = (0, _mobx.toJS)(_value);
     }
 
-    var changeEvent = attrs[changeEventName];
+    var changeEvent = tagProps[changeEventName];
 
     var _valuePropName = defaultValue || valuePropName;
 
     if (componentConfig.hasEventObject) {
       var targetPropName = componentConfig.targetPropName || 'value';
-      attrs[_valuePropName] = _value;
+      tagProps[_valuePropName] = _value;
 
-      attrs[changeEventName] = function (e) {
+      tagProps[changeEventName] = function (e) {
         _setValue(e.target[targetPropName], {
           value: value,
           args: arguments,
@@ -103,9 +103,9 @@
         }, ctxInstance);
       };
     } else {
-      attrs[_valuePropName] = _value;
+      tagProps[_valuePropName] = _value;
 
-      attrs[changeEventName] = function (v) {
+      tagProps[changeEventName] = function (v) {
         _setValue(v, {
           value: value,
           args: arguments,

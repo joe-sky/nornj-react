@@ -65,10 +65,10 @@ registerExtension('debounce', options => {
   const {
     tagName,
     setTagName,
-    attrs
+    tagProps
   } = options;
 
   setTagName(DebounceWrap);
-  attrs.component = tagName;
-  attrs.directiveOptions = options;
+  tagProps.component = tagName;
+  tagProps.directiveOptions = options;
 }, { onlyGlobal: true, isDirective: true });
