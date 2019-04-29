@@ -2,15 +2,15 @@ import nj, { registerExtension } from 'nornj';
 import { toJS } from 'mobx';
 import extensionConfigs from '../../extensionConfig';
 
-function _setValue(value, params, ctxInstance) {
-  const _value = params.reverse ? !params.value.val : value;
+function _setValue(value, params, $this) {
+  const _value = params.reverse ? !params.value.value : value;
   if (params.action) {
-    params.value._njCtx[`set${nj.capitalize(params.value.prop)}`](_value, params.args);
+    params.value.source[`set${nj.capitalize(params.value.prop)}`](_value, params.args);
   } else {
-    params.value._njCtx[params.value.prop] = _value;
+    params.value.source[params.value.prop] = _value;
   }
 
-  params.changeEvent && params.changeEvent.apply(ctxInstance, params.args);
+  params.changeEvent && params.changeEvent.apply($this, params.args);
 }
 
 const DEFAULT_VALUE = 'defaultValue';
@@ -21,7 +21,7 @@ function _setOnChange(options, value, action) {
   const {
     tagName,
     tagProps,
-    context: { ctxInstance },
+    context: { $this },
     props
   } = options;
   const componentConfig = nj.getComponentConfig(tagName) || {};
@@ -35,7 +35,7 @@ function _setOnChange(options, value, action) {
     changeEventName = componentConfig.changeEventName;
   }
 
-  let _value = value.val;
+  let _value = value.value;
   if (componentConfig.needToJS) {
     _value = toJS(_value);
   }
@@ -53,7 +53,7 @@ function _setOnChange(options, value, action) {
         changeEvent,
         action,
         valuePropName
-      }, ctxInstance);
+      }, $this);
     };
   }
   else {
@@ -65,7 +65,7 @@ function _setOnChange(options, value, action) {
         changeEvent,
         action,
         valuePropName
-      }, ctxInstance);
+      }, $this);
     };
   }
 }

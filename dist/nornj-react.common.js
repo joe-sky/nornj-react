@@ -1,5 +1,5 @@
 /*!
-* NornJ-React v5.0.0-rc.3
+* NornJ-React v5.0.0-rc.4
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
@@ -203,13 +203,13 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(DebounceWrap).call(this, props));
 
     _this.emitChange = function (args) {
-      _this.props[_this.changeEventName].apply(_this.ctxInstance, args);
+      _this.props[_this.changeEventName].apply(_this.$this, args);
     };
 
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     var _this$props$directive = _this.props.directiveOptions,
         tagName = _this$props$directive.tagName,
-        ctxInstance = _this$props$directive.context.ctxInstance,
+        $this = _this$props$directive.context.$this,
         directiveProps = _this$props$directive.props,
         value = _this$props$directive.value;
 
@@ -217,7 +217,7 @@ function (_Component) {
 
     _this.componentConfig = nj__default.getComponentConfig(tagName) || {};
     _this.changeEventName = _args && _args[0].name || _this.componentConfig.changeEventName || 'onChange';
-    _this.ctxInstance = ctxInstance;
+    _this.$this = $this;
     _this.emitChangeDebounced = debounce(_this.emitChange, value() || 100);
     return _this;
   }

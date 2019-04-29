@@ -1,5 +1,5 @@
 /*!
-* NornJ-React-Mobx v5.0.0-rc.3
+* NornJ-React-Mobx v5.0.0-rc.4
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
@@ -46,16 +46,16 @@
     }
   }
 
-  function _setValue(value, params, ctxInstance) {
-    var _value = params.reverse ? !params.value.val : value;
+  function _setValue(value, params, $this) {
+    var _value = params.reverse ? !params.value.value : value;
 
     if (params.action) {
-      params.value._njCtx["set".concat(_nornj.default.capitalize(params.value.prop))](_value, params.args);
+      params.value.source["set".concat(_nornj.default.capitalize(params.value.prop))](_value, params.args);
     } else {
-      params.value._njCtx[params.value.prop] = _value;
+      params.value.source[params.value.prop] = _value;
     }
 
-    params.changeEvent && params.changeEvent.apply(ctxInstance, params.args);
+    params.changeEvent && params.changeEvent.apply($this, params.args);
   }
 
   var DEFAULT_VALUE = 'defaultValue';
@@ -65,7 +65,7 @@
         changeEventName = 'onChange';
     var tagName = options.tagName,
         tagProps = options.tagProps,
-        ctxInstance = options.context.ctxInstance,
+        $this = options.context.$this,
         props = options.props;
     var componentConfig = _nornj.default.getComponentConfig(tagName) || {};
     var args = props && props.arguments;
@@ -79,7 +79,7 @@
       changeEventName = componentConfig.changeEventName;
     }
 
-    var _value = value.val;
+    var _value = value.value;
 
     if (componentConfig.needToJS) {
       _value = (0, _mobx.toJS)(_value);
@@ -100,7 +100,7 @@
           changeEvent: changeEvent,
           action: action,
           valuePropName: valuePropName
-        }, ctxInstance);
+        }, $this);
       };
     } else {
       tagProps[_valuePropName] = _value;
@@ -112,7 +112,7 @@
           changeEvent: changeEvent,
           action: action,
           valuePropName: valuePropName
-        }, ctxInstance);
+        }, $this);
       };
     }
   }
