@@ -49,6 +49,14 @@
   function _setValue(value, params, $this) {
     var _value = params.reverse ? !params.value.value : value;
 
+    if (params.isMultipleSelect) {
+      _value = _nornj.default.arraySlice(params.target.options).filter(function (option) {
+        return option.selected;
+      }).map(function (option) {
+        return option.value;
+      });
+    }
+
     if (params.action) {
       params.value.source["set".concat(_nornj.default.capitalize(params.value.prop))](_value, params.args);
     } else {
@@ -80,8 +88,9 @@
     }
 
     var _value = value.value;
+    var isMultipleSelect = tagName === 'select' && tagProps.multiple;
 
-    if (componentConfig.needToJS) {
+    if (componentConfig.needToJS || isMultipleSelect) {
       _value = (0, _mobx.toJS)(_value);
     }
 
@@ -95,11 +104,13 @@
 
       tagProps[changeEventName] = function (e) {
         _setValue(e.target[targetPropName], {
+          target: e.target,
           value: value,
           args: arguments,
           changeEvent: changeEvent,
           action: action,
-          valuePropName: valuePropName
+          valuePropName: valuePropName,
+          isMultipleSelect: isMultipleSelect
         }, $this);
       };
     } else {
@@ -111,7 +122,8 @@
           args: arguments,
           changeEvent: changeEvent,
           action: action,
-          valuePropName: valuePropName
+          valuePropName: valuePropName,
+          isMultipleSelect: isMultipleSelect
         }, $this);
       };
     }

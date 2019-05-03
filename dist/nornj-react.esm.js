@@ -279,7 +279,9 @@ var _defaultCfg = {
   hasEventObject: true
 },
     componentConfig = nj.componentConfig;
-componentConfig.input = componentConfig.select = componentConfig.textarea = _defaultCfg;
+componentConfig.set('input', _defaultCfg);
+componentConfig.set('select', _defaultCfg);
+componentConfig.set('textarea', _defaultCfg);
 
 var _global = typeof self !== 'undefined' ? self : global;
 

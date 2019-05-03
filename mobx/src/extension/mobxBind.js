@@ -3,7 +3,26 @@ import { toJS } from 'mobx';
 import extensionConfigs from '../../extensionConfig';
 
 function _setValue(value, params, $this) {
-  const _value = params.reverse ? !params.value.value : value;
+  let _value = value;
+  if (params.isMultipleSelect) {
+    _value = nj.arraySlice(params.target.options).filter(option => option.selected).map(option => option.value);
+  }
+  else if (params.isCheckbox) {
+    const checkboxValue = params.value.value;
+    if (nj.isArrayLike(checkboxValue)) {
+      if (params.target.checked) {
+        checkboxValue.push(value);
+      }
+      else {
+        checkboxValue.splice(checkboxValue.indexOf(value), 1);
+      }
+      _value = checkboxValue;
+    }
+    else {
+      _value = params.target.checked;
+    }
+  }
+
   if (params.action) {
     params.value.source[`set${nj.capitalize(params.value.prop)}`](_value, params.args);
   } else {
@@ -36,7 +55,8 @@ function _setOnChange(options, value, action) {
   }
 
   let _value = value.value;
-  if (componentConfig.needToJS) {
+  const isMultipleSelect = tagName === 'select' && tagProps.multiple;
+  if (componentConfig.needToJS || isMultipleSelect) {
     _value = toJS(_value);
   }
 
@@ -44,15 +64,28 @@ function _setOnChange(options, value, action) {
   const _valuePropName = defaultValue || valuePropName;
   if (componentConfig.hasEventObject) {
     const targetPropName = componentConfig.targetPropName || 'value';
+    const isRadio = tagName === 'input' && tagProps.type === 'radio';
+    const isCheckbox = tagName === 'input' && tagProps.type === 'checkbox';
+    if (isRadio) {
+      tagProps.checked = tagProps.value === _value;
+    }
+    else if (isCheckbox) {
+      tagProps.checked = _value != null && (nj.isArrayLike(_value) ? _value.indexOf(tagProps.value) >= 0 : _value);
+    }
+    else {
+      tagProps[_valuePropName] = _value;
+    }
 
-    tagProps[_valuePropName] = _value;
     tagProps[changeEventName] = function (e) {
       _setValue(e.target[targetPropName], {
+        target: e.target,
         value,
         args: arguments,
         changeEvent,
         action,
-        valuePropName
+        valuePropName,
+        isMultipleSelect,
+        isCheckbox
       }, $this);
     };
   }
@@ -73,7 +106,7 @@ function _setOnChange(options, value, action) {
 function _hasArg(args, name) {
   let ret;
   args && args.every(arg => {
-    if(arg.name == name) {
+    if (arg.name == name) {
       ret = true;
       return false;
     }
