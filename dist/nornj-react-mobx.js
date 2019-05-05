@@ -47,7 +47,7 @@
   }
 
   function _setValue(value, params, $this) {
-    var _value = params.reverse ? !params.value.value : value;
+    var _value = value;
 
     if (params.isMultipleSelect) {
       _value = _nornj.default.arraySlice(params.target.options).filter(function (option) {
@@ -55,6 +55,20 @@
       }).map(function (option) {
         return option.value;
       });
+    } else if (params.isCheckbox) {
+      var checkboxValue = params.value.value;
+
+      if (_nornj.default.isArrayLike(checkboxValue)) {
+        if (params.target.checked) {
+          checkboxValue.push(value);
+        } else {
+          checkboxValue.splice(checkboxValue.indexOf(value), 1);
+        }
+
+        _value = checkboxValue;
+      } else {
+        _value = params.target.checked;
+      }
     }
 
     if (params.action) {
@@ -100,7 +114,16 @@
 
     if (componentConfig.hasEventObject) {
       var targetPropName = componentConfig.targetPropName || 'value';
-      tagProps[_valuePropName] = _value;
+      var isRadio = tagName === 'input' && tagProps.type === 'radio';
+      var isCheckbox = tagName === 'input' && tagProps.type === 'checkbox';
+
+      if (isRadio) {
+        tagProps.checked = tagProps.value === _value;
+      } else if (isCheckbox) {
+        tagProps.checked = _value != null && (_nornj.default.isArrayLike(_value) ? _value.indexOf(tagProps.value) >= 0 : _value);
+      } else {
+        tagProps[_valuePropName] = _value;
+      }
 
       tagProps[changeEventName] = function (e) {
         _setValue(e.target[targetPropName], {
@@ -110,7 +133,8 @@
           changeEvent: changeEvent,
           action: action,
           valuePropName: valuePropName,
-          isMultipleSelect: isMultipleSelect
+          isMultipleSelect: isMultipleSelect,
+          isCheckbox: isCheckbox
         }, $this);
       };
     } else {
@@ -122,8 +146,7 @@
           args: arguments,
           changeEvent: changeEvent,
           action: action,
-          valuePropName: valuePropName,
-          isMultipleSelect: isMultipleSelect
+          valuePropName: valuePropName
         }, $this);
       };
     }

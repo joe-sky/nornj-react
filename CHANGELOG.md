@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v5.0.0-rc.4] 2019.05.05
+
+* 🌟 `n-mobxBind` support the native `multiple select`, `checkbox` and `radio`.
+
 ## [v5.0.0-rc.2] 2019.04.14
 
 * 🌟 Add `MobxObserver` tag.
