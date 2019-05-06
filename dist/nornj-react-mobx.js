@@ -1,5 +1,5 @@
 /*!
-* NornJ-React-Mobx v5.0.0-rc.4
+* NornJ-React-Mobx v5.0.0-rc.5
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
@@ -80,7 +80,7 @@
     params.changeEvent && params.changeEvent.apply($this, params.args);
   }
 
-  var DEFAULT_VALUE = 'defaultValue';
+  var DEFAULT_VALUE = 'default';
 
   function _setOnChange(options, value, action) {
     var valuePropName = 'value',

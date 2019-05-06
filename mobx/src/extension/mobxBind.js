@@ -32,7 +32,7 @@ function _setValue(value, params, $this) {
   params.changeEvent && params.changeEvent.apply($this, params.args);
 }
 
-const DEFAULT_VALUE = 'defaultValue';
+const DEFAULT_VALUE = 'default';
 
 function _setOnChange(options, value, action) {
   let valuePropName = 'value',
