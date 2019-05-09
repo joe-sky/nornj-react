@@ -32,8 +32,6 @@ function _setValue(value, params, $this) {
   params.changeEvent && params.changeEvent.apply($this, params.args);
 }
 
-const DEFAULT_VALUE = 'default';
-
 function _setOnChange(options, value, action) {
   let valuePropName = 'value',
     changeEventName = 'onChange';
@@ -45,7 +43,7 @@ function _setOnChange(options, value, action) {
   } = options;
   const componentConfig = nj.getComponentConfig(tagName) || {};
   const args = props && props.arguments;
-  const defaultValue = _hasArg(args, DEFAULT_VALUE) && DEFAULT_VALUE;
+  const defaultValue = _hasArg(args, 'default') && 'defaultValue';
 
   if (componentConfig.valuePropName != null) {
     valuePropName = componentConfig.valuePropName;
