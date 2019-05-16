@@ -1,5 +1,5 @@
 /*!
-* NornJ-React-Mobx v5.0.0-rc.6
+* NornJ-React-Mobx v5.0.0-rc.9
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
@@ -11,9 +11,13 @@
 
   var _nornj = _interopRequireWildcard(require("nornj"));
 
+  var _react = _interopRequireWildcard(require("react"));
+
   var _mobx = require("mobx");
 
   var _extensionConfig = _interopRequireDefault(require("../../extensionConfig"));
+
+  var _utils = require("../../../lib/utils");
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -46,6 +50,166 @@
     }
   }
 
+  function _objectSpread(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+      var ownKeys = Object.keys(source);
+
+      if (typeof Object.getOwnPropertySymbols === 'function') {
+        ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+          return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+        }));
+      }
+
+      ownKeys.forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    }
+
+    return target;
+  }
+
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  function _objectWithoutProperties(source, excluded) {
+    if (source == null) return {};
+
+    var target = _objectWithoutPropertiesLoose(source, excluded);
+
+    var key, i;
+
+    if (Object.getOwnPropertySymbols) {
+      var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+      for (i = 0; i < sourceSymbolKeys.length; i++) {
+        key = sourceSymbolKeys[i];
+        if (excluded.indexOf(key) >= 0) continue;
+        if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+        target[key] = source[key];
+      }
+    }
+
+    return target;
+  }
+
+  function _objectWithoutPropertiesLoose(source, excluded) {
+    if (source == null) return {};
+    var target = {};
+    var sourceKeys = Object.keys(source);
+    var key, i;
+
+    for (i = 0; i < sourceKeys.length; i++) {
+      key = sourceKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      target[key] = source[key];
+    }
+
+    return target;
+  }
+
+  var MobxBindWrap = function MobxBindWrap(_ref) {
+    var component = _ref.component,
+        _ref$directiveOptions = _ref.directiveOptions,
+        tagName = _ref$directiveOptions.tagName,
+        $this = _ref$directiveOptions.context.$this,
+        directiveProps = _ref$directiveOptions.props,
+        value = _ref._value,
+        action = _ref._action,
+        props = _objectWithoutProperties(_ref, ["component", "directiveOptions", "_value", "_action"]);
+
+    var valuePropName = 'value',
+        changeEventName = 'onChange';
+    var componentConfig = _nornj.default.getComponentConfig(tagName) || {};
+    var args = directiveProps && directiveProps.arguments;
+
+    var debounceArg = _hasArg(args, 'debounce');
+
+    if (componentConfig.valuePropName != null) {
+      valuePropName = componentConfig.valuePropName;
+    }
+
+    if (componentConfig.changeEventName != null) {
+      changeEventName = componentConfig.changeEventName;
+    }
+
+    var _value = value.value;
+    var isMultipleSelect = tagName === 'select' && props.multiple;
+
+    if (componentConfig.needToJS || isMultipleSelect) {
+      _value = (0, _mobx.toJS)(_value);
+    }
+
+    var changeEvent = props[changeEventName];
+    var emitChangeDebounced;
+
+    if (debounceArg) {
+      var modifiers = debounceArg.modifiers;
+      emitChangeDebounced = (0, _react.useRef)((0, _utils.debounce)(function (args) {
+        changeEvent.apply($this, args);
+      }, modifiers && +modifiers[0] || 100));
+    }
+
+    var compProps = {};
+
+    if (componentConfig.hasEventObject) {
+      var targetPropName = componentConfig.targetPropName || 'value';
+      var isRadio = tagName === 'input' && props.type === 'radio';
+      var isCheckbox = tagName === 'input' && props.type === 'checkbox';
+
+      if (isRadio) {
+        compProps.checked = props.value === _value;
+      } else if (isCheckbox) {
+        compProps.checked = _value != null && (_nornj.default.isArrayLike(_value) ? _value.indexOf(props.value) >= 0 : _value);
+      } else {
+        compProps[valuePropName] = _value;
+      }
+
+      compProps[changeEventName] = function (e) {
+        e && e.persist && e.persist();
+
+        _setValue(e.target[targetPropName], {
+          target: e.target,
+          value: value,
+          args: arguments,
+          changeEvent: changeEvent,
+          action: action,
+          valuePropName: valuePropName,
+          emitChangeDebounced: emitChangeDebounced,
+          isMultipleSelect: isMultipleSelect,
+          isCheckbox: isCheckbox
+        }, $this);
+      };
+    } else {
+      compProps[valuePropName] = _value;
+
+      compProps[changeEventName] = function (v) {
+        _setValue(v, {
+          value: value,
+          args: arguments,
+          changeEvent: changeEvent,
+          action: action,
+          valuePropName: valuePropName,
+          emitChangeDebounced: emitChangeDebounced
+        }, $this);
+      };
+    }
+
+    return _react.default.createElement(component, _objectSpread({}, props, compProps));
+  };
+
   function _setValue(value, params, $this) {
     var _value = value;
 
@@ -77,76 +241,10 @@
       params.value.source[params.value.prop] = _value;
     }
 
-    params.changeEvent && params.changeEvent.apply($this, params.args);
-  }
-
-  function _setOnChange(options, value, action) {
-    var valuePropName = 'value',
-        changeEventName = 'onChange';
-    var tagName = options.tagName,
-        tagProps = options.tagProps,
-        $this = options.context.$this,
-        props = options.props;
-    var componentConfig = _nornj.default.getComponentConfig(tagName) || {};
-    var args = props && props.arguments;
-    var defaultValue = _hasArg(args, 'default') && 'defaultValue';
-
-    if (componentConfig.valuePropName != null) {
-      valuePropName = componentConfig.valuePropName;
-    }
-
-    if (componentConfig.changeEventName != null) {
-      changeEventName = componentConfig.changeEventName;
-    }
-
-    var _value = value.value;
-    var isMultipleSelect = tagName === 'select' && tagProps.multiple;
-
-    if (componentConfig.needToJS || isMultipleSelect) {
-      _value = (0, _mobx.toJS)(_value);
-    }
-
-    var changeEvent = tagProps[changeEventName];
-
-    var _valuePropName = defaultValue || valuePropName;
-
-    if (componentConfig.hasEventObject) {
-      var targetPropName = componentConfig.targetPropName || 'value';
-      var isRadio = tagName === 'input' && tagProps.type === 'radio';
-      var isCheckbox = tagName === 'input' && tagProps.type === 'checkbox';
-
-      if (isRadio) {
-        tagProps.checked = tagProps.value === _value;
-      } else if (isCheckbox) {
-        tagProps.checked = _value != null && (_nornj.default.isArrayLike(_value) ? _value.indexOf(tagProps.value) >= 0 : _value);
-      } else {
-        tagProps[_valuePropName] = _value;
-      }
-
-      tagProps[changeEventName] = function (e) {
-        _setValue(e.target[targetPropName], {
-          target: e.target,
-          value: value,
-          args: arguments,
-          changeEvent: changeEvent,
-          action: action,
-          valuePropName: valuePropName,
-          isMultipleSelect: isMultipleSelect,
-          isCheckbox: isCheckbox
-        }, $this);
-      };
-    } else {
-      tagProps[_valuePropName] = _value;
-
-      tagProps[changeEventName] = function (v) {
-        _setValue(v, {
-          value: value,
-          args: arguments,
-          changeEvent: changeEvent,
-          action: action,
-          valuePropName: valuePropName
-        }, $this);
-      };
+    if (params.emitChangeDebounced) {
+      params.emitChangeDebounced.current(params.args);
+    } else if (params.changeEvent) {
+      params.changeEvent.apply($this, params.args);
     }
   }
 
@@ -154,7 +252,7 @@
     var ret;
     args && args.every(function (arg) {
       if (arg.name == name) {
-        ret = true;
+        ret = arg;
         return false;
       }
 
@@ -164,14 +262,21 @@
   }
 
   (0, _nornj.registerExtension)('mobxBind', function (options) {
-    var props = options.props;
     var ret = options.value();
 
     if (ret == null) {
       return ret;
     }
 
-    _setOnChange(options, ret, _hasArg(props && props.arguments, 'action'));
+    var tagName = options.tagName,
+        setTagName = options.setTagName,
+        tagProps = options.tagProps,
+        props = options.props;
+    setTagName(MobxBindWrap);
+    tagProps.component = tagName;
+    tagProps.directiveOptions = options;
+    tagProps._value = ret;
+    tagProps._action = _hasArg(props && props.arguments, 'action');
   }, _extensionConfig.default.mobxBind);
   (0, _nornj.registerExtension)('mstBind', function (options) {
     var ret = options.value();
@@ -180,12 +285,19 @@
       return ret;
     }
 
-    _setOnChange(options, ret, true);
+    var tagName = options.tagName,
+        setTagName = options.setTagName,
+        tagProps = options.tagProps;
+    setTagName(MobxBindWrap);
+    tagProps.component = tagName;
+    tagProps.directiveOptions = options;
+    tagProps._value = ret;
+    tagProps._action = true;
   }, _extensionConfig.default.mstBind);
 
   var _nornj$1 = require("nornj");
 
-  var _react = _interopRequireDefault$1(require("react"));
+  var _react$1 = _interopRequireDefault$1(require("react"));
 
   var _mobxReactLite = require("mobx-react-lite");
 
@@ -198,7 +310,7 @@
   }
 
   (0, _nornj$1.registerExtension)('mobxObserver', function (options) {
-    return _react.default.createElement(_mobxReactLite.Observer, null, function () {
+    return _react$1.default.createElement(_mobxReactLite.Observer, null, function () {
       return options.children();
     });
   }, _extensionConfig$1.default.mobxObserver);

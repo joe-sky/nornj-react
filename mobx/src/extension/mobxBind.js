@@ -1,6 +1,98 @@
 import nj, { registerExtension } from 'nornj';
+import React, { useRef } from 'react';
 import { toJS } from 'mobx';
 import extensionConfigs from '../../extensionConfig';
+import { debounce } from '../../../lib/utils';
+
+const MobxBindWrap = ({
+  component,
+  directiveOptions: {
+    tagName,
+    context: { $this },
+    props: directiveProps
+  },
+  _value: value,
+  _action: action,
+  ...props
+}) => {
+  let valuePropName = 'value',
+    changeEventName = 'onChange';
+  const componentConfig = nj.getComponentConfig(tagName) || {};
+  const args = directiveProps && directiveProps.arguments;
+  const debounceArg = _hasArg(args, 'debounce');
+
+  if (componentConfig.valuePropName != null) {
+    valuePropName = componentConfig.valuePropName;
+  }
+  if (componentConfig.changeEventName != null) {
+    changeEventName = componentConfig.changeEventName;
+  }
+
+  let _value = value.value;
+  const isMultipleSelect = tagName === 'select' && props.multiple;
+  if (componentConfig.needToJS || isMultipleSelect) {
+    _value = toJS(_value);
+  }
+
+  const changeEvent = props[changeEventName];
+  let emitChangeDebounced;
+  if (debounceArg) {
+    const { modifiers } = debounceArg;
+    emitChangeDebounced = useRef(debounce(args => {
+      changeEvent.apply($this, args);
+    }, (modifiers && +modifiers[0]) || 100));
+  }
+
+  const compProps = {};
+  if (componentConfig.hasEventObject) {
+    const targetPropName = componentConfig.targetPropName || 'value';
+    const isRadio = tagName === 'input' && props.type === 'radio';
+    const isCheckbox = tagName === 'input' && props.type === 'checkbox';
+    if (isRadio) {
+      compProps.checked = props.value === _value;
+    }
+    else if (isCheckbox) {
+      compProps.checked = _value != null && (nj.isArrayLike(_value) ? _value.indexOf(props.value) >= 0 : _value);
+    }
+    else {
+      compProps[valuePropName] = _value;
+    }
+
+    compProps[changeEventName] = function (e) {
+      e && e.persist && e.persist();
+
+      _setValue(e.target[targetPropName], {
+        target: e.target,
+        value,
+        args: arguments,
+        changeEvent,
+        action,
+        valuePropName,
+        emitChangeDebounced,
+        isMultipleSelect,
+        isCheckbox
+      }, $this);
+    };
+  }
+  else {
+    compProps[valuePropName] = _value;
+    compProps[changeEventName] = function (v) {
+      _setValue(v, {
+        value,
+        args: arguments,
+        changeEvent,
+        action,
+        valuePropName,
+        emitChangeDebounced
+      }, $this);
+    };
+  }
+
+  return React.createElement(component, {
+    ...props,
+    ...compProps
+  });
+};
 
 function _setValue(value, params, $this) {
   let _value = value;
@@ -29,75 +121,11 @@ function _setValue(value, params, $this) {
     params.value.source[params.value.prop] = _value;
   }
 
-  params.changeEvent && params.changeEvent.apply($this, params.args);
-}
-
-function _setOnChange(options, value, action) {
-  let valuePropName = 'value',
-    changeEventName = 'onChange';
-  const {
-    tagName,
-    tagProps,
-    context: { $this },
-    props
-  } = options;
-  const componentConfig = nj.getComponentConfig(tagName) || {};
-  const args = props && props.arguments;
-  const defaultValue = _hasArg(args, 'default') && 'defaultValue';
-
-  if (componentConfig.valuePropName != null) {
-    valuePropName = componentConfig.valuePropName;
+  if (params.emitChangeDebounced) {
+    params.emitChangeDebounced.current(params.args);
   }
-  if (componentConfig.changeEventName != null) {
-    changeEventName = componentConfig.changeEventName;
-  }
-
-  let _value = value.value;
-  const isMultipleSelect = tagName === 'select' && tagProps.multiple;
-  if (componentConfig.needToJS || isMultipleSelect) {
-    _value = toJS(_value);
-  }
-
-  const changeEvent = tagProps[changeEventName];
-  const _valuePropName = defaultValue || valuePropName;
-  if (componentConfig.hasEventObject) {
-    const targetPropName = componentConfig.targetPropName || 'value';
-    const isRadio = tagName === 'input' && tagProps.type === 'radio';
-    const isCheckbox = tagName === 'input' && tagProps.type === 'checkbox';
-    if (isRadio) {
-      tagProps.checked = tagProps.value === _value;
-    }
-    else if (isCheckbox) {
-      tagProps.checked = _value != null && (nj.isArrayLike(_value) ? _value.indexOf(tagProps.value) >= 0 : _value);
-    }
-    else {
-      tagProps[_valuePropName] = _value;
-    }
-
-    tagProps[changeEventName] = function (e) {
-      _setValue(e.target[targetPropName], {
-        target: e.target,
-        value,
-        args: arguments,
-        changeEvent,
-        action,
-        valuePropName,
-        isMultipleSelect,
-        isCheckbox
-      }, $this);
-    };
-  }
-  else {
-    tagProps[_valuePropName] = _value;
-    tagProps[changeEventName] = function (v) {
-      _setValue(v, {
-        value,
-        args: arguments,
-        changeEvent,
-        action,
-        valuePropName
-      }, $this);
-    };
+  else if (params.changeEvent) {
+    params.changeEvent.apply($this, params.args);
   }
 }
 
@@ -105,7 +133,7 @@ function _hasArg(args, name) {
   let ret;
   args && args.every(arg => {
     if (arg.name == name) {
-      ret = true;
+      ret = arg;
       return false;
     }
     return true;
@@ -115,13 +143,23 @@ function _hasArg(args, name) {
 }
 
 registerExtension('mobxBind', options => {
-  const { props } = options;
   const ret = options.value();
   if (ret == null) {
     return ret;
   }
 
-  _setOnChange(options, ret, _hasArg(props && props.arguments, 'action'));
+  const {
+    tagName,
+    setTagName,
+    tagProps,
+    props
+  } = options;
+
+  setTagName(MobxBindWrap);
+  tagProps.component = tagName;
+  tagProps.directiveOptions = options;
+  tagProps._value = ret;
+  tagProps._action = _hasArg(props && props.arguments, 'action');
 }, extensionConfigs.mobxBind);
 
 registerExtension('mstBind', options => {
@@ -130,5 +168,15 @@ registerExtension('mstBind', options => {
     return ret;
   }
 
-  _setOnChange(options, ret, true);
+  const {
+    tagName,
+    setTagName,
+    tagProps
+  } = options;
+
+  setTagName(MobxBindWrap);
+  tagProps.component = tagName;
+  tagProps.directiveOptions = options;
+  tagProps._value = ret;
+  tagProps._action = true;
 }, extensionConfigs.mstBind);
