@@ -1,8 +1,8 @@
 const mobxConfig = {
   onlyGlobal: true,
   newContext: false,
-  addSet: true,
-  useExpressionInJsx: true,
+  isBindable: true,
+  useExpressionInProps: true,
   isDirective: true
 };
 
