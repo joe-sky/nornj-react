@@ -95,11 +95,13 @@ nj.registerExtension(
 );
 
 function TestBind(props) {
-  const count = useState(100);
+  const $count = useState(100),
+    [count] = $count;
 
   return (
     <div>
-      <input ref={props.inputRef} n-bind={count} onChange={props.handleChange} />
+      <input ref={props.inputRef} n-bind={$count} onChange={props.handleChange} />
+      {count}
     </div>
   );
 }
