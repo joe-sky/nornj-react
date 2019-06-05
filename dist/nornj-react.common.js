@@ -1,5 +1,5 @@
 /*!
-* NornJ-React v5.0.0-rc.10
+* NornJ-React v5.0.0-rc.13
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
@@ -72,23 +72,22 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-function _objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-    var ownKeys = Object.keys(source);
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
 
-    if (typeof Object.getOwnPropertySymbols === 'function') {
-      ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-      }));
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
     }
 
-    ownKeys.forEach(function (key) {
-      _defineProperty(target, key, source[key]);
-    });
-  }
+    return target;
+  };
 
-  return target;
+  return _extends.apply(this, arguments);
 }
 
 function _inherits(subClass, superClass) {
@@ -190,28 +189,28 @@ nj__default.assign(nj__default, {
   debounce: debounce
 });
 
-var DebounceWrap =
+var DebounceWrapClass =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(DebounceWrap, _Component);
+  _inherits(DebounceWrapClass, _Component);
 
-  function DebounceWrap(props) {
+  function DebounceWrapClass(props) {
     var _this;
 
-    _classCallCheck(this, DebounceWrap);
+    _classCallCheck(this, DebounceWrapClass);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(DebounceWrap).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(DebounceWrapClass).call(this, props));
 
     _this.emitChange = function (args) {
       _this.props[_this.changeEventName].apply(_this.$this, args);
     };
 
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
-    var _this$props$directive = _this.props.directiveOptions,
-        tagName = _this$props$directive.tagName,
-        $this = _this$props$directive.context.$this,
-        directiveProps = _this$props$directive.props,
-        value = _this$props$directive.value;
+    var _this$props$debounceD = _this.props.debounceDirectiveOptions,
+        tagName = _this$props$debounceD.tagName,
+        $this = _this$props$debounceD.context.$this,
+        directiveProps = _this$props$debounceD.props,
+        value = _this$props$debounceD.value;
 
     var _args = directiveProps && directiveProps.arguments;
 
@@ -222,11 +221,11 @@ function (_Component) {
     return _this;
   }
 
-  _createClass(DebounceWrap, [{
+  _createClass(DebounceWrapClass, [{
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
-      var prevValue = prevProps.directiveOptions.value;
-      var value = this.props.directiveOptions.value;
+      var prevValue = prevProps.debounceDirectiveOptions.value;
+      var value = this.props.debounceDirectiveOptions.value;
       var newValue = value();
 
       if (newValue != null && newValue != prevValue()) {
@@ -246,24 +245,32 @@ function (_Component) {
     key: "render",
     value: function render() {
       var _this$props = this.props,
-          component = _this$props.component,
-          directiveOptions = _this$props.directiveOptions,
-          others = _objectWithoutProperties(_this$props, ["component", "directiveOptions"]);
+          DebounceTag = _this$props.DebounceTag,
+          debounceDirectiveOptions = _this$props.debounceDirectiveOptions,
+          innerRef = _this$props.innerRef,
+          others = _objectWithoutProperties(_this$props, ["DebounceTag", "debounceDirectiveOptions", "innerRef"]);
 
-      return React__default.createElement(component, _objectSpread({}, others, _defineProperty({}, this.changeEventName, this.handleChange)));
+      return React__default.createElement(DebounceTag, _extends({
+        ref: innerRef
+      }, others, _defineProperty({}, this.changeEventName, this.handleChange)));
     }
   }]);
 
-  return DebounceWrap;
+  return DebounceWrapClass;
 }(React.Component);
 
+var DebounceWrap = React__default.forwardRef(function (props, ref) {
+  return React__default.createElement(DebounceWrapClass, _extends({
+    innerRef: ref
+  }, props));
+});
 nj.registerExtension('debounce', function (options) {
   var tagName = options.tagName,
       setTagName = options.setTagName,
       tagProps = options.tagProps;
   setTagName(DebounceWrap);
-  tagProps.component = tagName;
-  tagProps.directiveOptions = options;
+  tagProps.DebounceTag = tagName;
+  tagProps.debounceDirectiveOptions = options;
 }, {
   onlyGlobal: true,
   isDirective: true

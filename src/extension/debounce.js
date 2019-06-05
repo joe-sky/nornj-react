@@ -2,13 +2,13 @@ import nj, { registerExtension } from 'nornj';
 import React, { Component } from 'react';
 import { debounce } from '../utils';
 
-class DebounceWrap extends Component {
+class DebounceWrapClass extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
 
     const {
-      directiveOptions: {
+      debounceDirectiveOptions: {
         tagName,
         context: { $this },
         props: directiveProps,
@@ -25,10 +25,10 @@ class DebounceWrap extends Component {
 
   componentDidUpdate(prevProps) {
     const {
-      directiveOptions: { value: prevValue }
+      debounceDirectiveOptions: { value: prevValue }
     } = prevProps;
     const {
-      directiveOptions: { value }
+      debounceDirectiveOptions: { value }
     } = this.props;
 
     const newValue = value();
@@ -50,16 +50,15 @@ class DebounceWrap extends Component {
   };
 
   render() {
-    const { component, directiveOptions, ...others } = this.props;
+    const { DebounceTag, debounceDirectiveOptions, innerRef, ...others } = this.props;
 
-    return React.createElement(component, {
-      ...others,
-      ...{
-        [this.changeEventName]: this.handleChange
-      }
-    });
+    return <DebounceTag ref={innerRef} {...others} {...{
+      [this.changeEventName]: this.handleChange
+    }} />;
   }
 }
+
+const DebounceWrap = React.forwardRef((props, ref) => <DebounceWrapClass innerRef={ref} {...props} />);
 
 registerExtension('debounce', options => {
   const {
@@ -69,6 +68,6 @@ registerExtension('debounce', options => {
   } = options;
 
   setTagName(DebounceWrap);
-  tagProps.component = tagName;
-  tagProps.directiveOptions = options;
+  tagProps.DebounceTag = tagName;
+  tagProps.debounceDirectiveOptions = options;
 }, { onlyGlobal: true, isDirective: true });

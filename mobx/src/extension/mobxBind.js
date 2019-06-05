@@ -4,17 +4,17 @@ import { toJS } from 'mobx';
 import extensionConfigs from '../../extensionConfig';
 import { debounce } from '../../../lib/utils';
 
-const MobxBindWrap = ({
-  component,
-  directiveOptions: {
+const MobxBindWrap = React.forwardRef(({
+  MobxBindTag,
+  mobxBindDirectiveOptions: {
     tagName,
     context: { $this },
     props: directiveProps
   },
-  _value: value,
-  _action: action,
+  _mobxBindValue: value,
+  _mobxBindAction: action,
   ...props
-}) => {
+}, ref) => {
   let valuePropName = 'value',
     changeEventName = 'onChange';
   const componentConfig = nj.getComponentConfig(tagName) || {};
@@ -88,11 +88,8 @@ const MobxBindWrap = ({
     };
   }
 
-  return React.createElement(component, {
-    ...props,
-    ...compProps
-  });
-};
+  return <MobxBindTag {...props} {...compProps} ref={ref} />;
+});
 
 function _setValue(value, params, $this) {
   let _value = value;
@@ -156,10 +153,10 @@ registerExtension('mobxBind', options => {
   } = options;
 
   setTagName(MobxBindWrap);
-  tagProps.component = tagName;
-  tagProps.directiveOptions = options;
-  tagProps._value = ret;
-  tagProps._action = _hasArg(props && props.arguments, 'action');
+  tagProps.MobxBindTag = tagName;
+  tagProps.mobxBindDirectiveOptions = options;
+  tagProps._mobxBindValue = ret;
+  tagProps._mobxBindAction = _hasArg(props && props.arguments, 'action');
 }, extensionConfigs.mobxBind);
 
 registerExtension('mstBind', options => {
@@ -175,8 +172,8 @@ registerExtension('mstBind', options => {
   } = options;
 
   setTagName(MobxBindWrap);
-  tagProps.component = tagName;
-  tagProps.directiveOptions = options;
-  tagProps._value = ret;
-  tagProps._action = true;
+  tagProps.MobxBindTag = tagName;
+  tagProps.mobxBindDirectiveOptions = options;
+  tagProps._mobxBindValue = ret;
+  tagProps._mobxBindAction = true;
 }, extensionConfigs.mstBind);

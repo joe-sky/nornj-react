@@ -48,7 +48,8 @@ const config = {
           {
             modules: false
           }
-        ]
+        ],
+        '@babel/preset-react'
       ],
       plugins: [
         [

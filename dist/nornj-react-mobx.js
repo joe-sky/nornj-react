@@ -1,5 +1,5 @@
 /*!
-* NornJ-React-Mobx v5.0.0-rc.10
+* NornJ-React-Mobx v5.0.0-rc.13
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
@@ -50,38 +50,22 @@
     }
   }
 
-  function _objectSpread(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i] != null ? arguments[i] : {};
-      var ownKeys = Object.keys(source);
+  function _extends() {
+    _extends = Object.assign || function (target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
 
-      if (typeof Object.getOwnPropertySymbols === 'function') {
-        ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
-          return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-        }));
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
       }
 
-      ownKeys.forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
-    }
+      return target;
+    };
 
-    return target;
-  }
-
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
+    return _extends.apply(this, arguments);
   }
 
   function _objectWithoutProperties(source, excluded) {
@@ -120,15 +104,15 @@
     return target;
   }
 
-  var MobxBindWrap = function MobxBindWrap(_ref) {
-    var component = _ref.component,
-        _ref$directiveOptions = _ref.directiveOptions,
-        tagName = _ref$directiveOptions.tagName,
-        $this = _ref$directiveOptions.context.$this,
-        directiveProps = _ref$directiveOptions.props,
-        value = _ref._value,
-        action = _ref._action,
-        props = _objectWithoutProperties(_ref, ["component", "directiveOptions", "_value", "_action"]);
+  var MobxBindWrap = _react.default.forwardRef(function (_ref, ref) {
+    var MobxBindTag = _ref.MobxBindTag,
+        _ref$mobxBindDirectiv = _ref.mobxBindDirectiveOptions,
+        tagName = _ref$mobxBindDirectiv.tagName,
+        $this = _ref$mobxBindDirectiv.context.$this,
+        directiveProps = _ref$mobxBindDirectiv.props,
+        value = _ref._mobxBindValue,
+        action = _ref._mobxBindAction,
+        props = _objectWithoutProperties(_ref, ["MobxBindTag", "mobxBindDirectiveOptions", "_mobxBindValue", "_mobxBindAction"]);
 
     var valuePropName = 'value',
         changeEventName = 'onChange';
@@ -207,8 +191,10 @@
       };
     }
 
-    return _react.default.createElement(component, _objectSpread({}, props, compProps));
-  };
+    return _react.default.createElement(MobxBindTag, _extends({}, props, compProps, {
+      ref: ref
+    }));
+  });
 
   function _setValue(value, params, $this) {
     var _value = value;
@@ -273,10 +259,10 @@
         tagProps = options.tagProps,
         props = options.props;
     setTagName(MobxBindWrap);
-    tagProps.component = tagName;
-    tagProps.directiveOptions = options;
-    tagProps._value = ret;
-    tagProps._action = _hasArg(props && props.arguments, 'action');
+    tagProps.MobxBindTag = tagName;
+    tagProps.mobxBindDirectiveOptions = options;
+    tagProps._mobxBindValue = ret;
+    tagProps._mobxBindAction = _hasArg(props && props.arguments, 'action');
   }, _extensionConfig.default.mobxBind);
   (0, _nornj.registerExtension)('mstBind', function (options) {
     var ret = options.value();
@@ -289,10 +275,10 @@
         setTagName = options.setTagName,
         tagProps = options.tagProps;
     setTagName(MobxBindWrap);
-    tagProps.component = tagName;
-    tagProps.directiveOptions = options;
-    tagProps._value = ret;
-    tagProps._action = true;
+    tagProps.MobxBindTag = tagName;
+    tagProps.mobxBindDirectiveOptions = options;
+    tagProps._mobxBindValue = ret;
+    tagProps._mobxBindAction = true;
   }, _extensionConfig.default.mstBind);
 
   var _nornj$1 = require("nornj");
