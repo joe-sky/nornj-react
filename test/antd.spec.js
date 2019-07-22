@@ -34,95 +34,95 @@ import '../antd/upload';
 
 describe('Antd spec', function () {
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Affix/>`());
+    const wrapper = mount(nj`<ant-Affix/>`());
 
     it('should be div tag by default', () => {
-      expect(defaultWrapper1.find('div').exists()).toBe(true);
+      expect(wrapper.find('div').exists()).toBe(true);
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = shallow(nj`<ant-Alert message="Success Text" type="success"/>`());
+    const wrapper = mount(nj`<ant-Alert message="Success Text" type="success"/>`());
 
     it('should be div tag with class name "ant-alert"', () => {
-      expect(defaultWrapper1.find('div').at(0)).toHaveClassName('ant-alert');
+      expect(wrapper.find('div').at(0)).toHaveClassName('ant-alert');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = shallow(nj`<ant-Breadcrumb><ant-BreadcrumbItem>Home</ant-BreadcrumbItem></ant-Breadcrumb>`());
+    const wrapper = mount(nj`<ant-Breadcrumb><ant-BreadcrumbItem>Home</ant-BreadcrumbItem></ant-Breadcrumb>`());
 
     it('should be div tag by default', () => {
-      expect(defaultWrapper1).toHaveDisplayName('div');
+      expect(wrapper).toHaveDisplayName('Breadcrumb');
     });
 
     it('and should have class name "ant-breadcrumb"', () => {
-      expect(defaultWrapper1).toHaveClassName('ant-breadcrumb');
+      expect(wrapper.find('div').at(0)).toHaveClassName('ant-breadcrumb');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Button>Default</ant-Button>`());
+    const wrapper = mount(nj`<ant-Button>Default</ant-Button>`());
 
     it('should be button tag by default', () => {
-      expect(defaultWrapper1.find('button').at(0)).toHaveClassName('ant-btn');
+      expect(wrapper.find('button').at(0)).toHaveClassName('ant-btn');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Calendar/>`());
+    const wrapper = mount(nj`<ant-Calendar/>`());
 
     it('should be div tag by default', () => {
-      expect(defaultWrapper1.find('div').at(0)).toHaveClassName('ant-fullcalendar-fullscreen');
+      expect(wrapper.find('div').at(0)).toHaveClassName('ant-fullcalendar-fullscreen');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = shallow(nj`<ant-Card><p>Card content</p></ant-Card>`());
+    const wrapper = mount(nj`<ant-Card><p>Card content</p></ant-Card>`());
 
     it('should be div tag by default', () => {
-      expect(defaultWrapper1).toHaveDisplayName('div');
+      expect(wrapper).toHaveDisplayName('Card');
     });
 
     it('and should have class name "ant-card"', () => {
-      expect(defaultWrapper1).toHaveClassName('ant-card');
+      expect(wrapper.find('div').at(0)).toHaveClassName('ant-card');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Cascader />`());
+    const wrapper = mount(nj`<ant-Cascader />`());
 
     it('should be span tag with class name "ant-cascader-picker" by default', () => {
-      expect(defaultWrapper1.find('span').at(0)).toHaveClassName('ant-cascader-picker');
+      expect(wrapper.find('span').at(0)).toHaveClassName('ant-cascader-picker');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = shallow(nj`<ant-Checkbox>Checkbox</ant-Checkbox>`());
+    const wrapper = mount(nj`<ant-Checkbox>Checkbox</ant-Checkbox>`());
 
     it('should be label tag by default', () => {
-      expect(defaultWrapper1).toHaveDisplayName('label');
+      expect(wrapper).toHaveDisplayName('Checkbox');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Collapse />`());
+    const wrapper = mount(nj`<ant-Collapse />`());
 
     it('should be div tag with class name "ant-collapse" by default', () => {
-      expect(defaultWrapper1.find('div').at(0)).toHaveClassName('ant-collapse');
+      expect(wrapper.find('div').at(0)).toHaveClassName('ant-collapse');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-DatePicker />`());
+    const wrapper = mount(nj`<ant-DatePicker />`());
 
     it('should be span tag with class name "ant-calendar-picker" by default', () => {
-      expect(defaultWrapper1.find('span').at(0)).toHaveClassName('ant-calendar-picker');
+      expect(wrapper.find('span').at(0)).toHaveClassName('ant-calendar-picker');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = shallow(nj`<ant-Form><ant-FormItem>
+    const wrapper = mount(nj`<ant-Form><ant-FormItem>
           <!--{getFieldDecorator('userName', {
             rules: [{ required: true, message: 'Please input your username!' }],
           })(
@@ -131,31 +131,31 @@ describe('Antd spec', function () {
         </ant-FormItem></ant-Form>` ());
 
     it('should be form tag by default', () => {
-      expect(defaultWrapper1).toHaveDisplayName('form');
+      expect(wrapper).toHaveDisplayName('Form');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = shallow(nj`<ant-Icon type="link"/>`());
+    const wrapper = mount(nj`<ant-Icon type="link"/>`());
 
     it('should be i tag by default', () => {
-      expect(defaultWrapper1).toHaveDisplayName('i');
+      expect(wrapper).toHaveDisplayName('Icon');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = shallow(nj`<ant-Input />`());
+    const wrapper = mount(nj`<ant-Input />`());
 
     it('should be input tag by default', () => {
-      expect(defaultWrapper1).toHaveDisplayName('input');
+      expect(wrapper).toHaveDisplayName('Input');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Menu />`());
+    const wrapper = mount(nj`<ant-Menu />`());
 
     it('should be ul tag with class name "ant-menu" by default', () => {
-      expect(defaultWrapper1.find('ul').at(0)).toHaveClassName('ant-menu');
+      expect(wrapper.find('ul').at(0)).toHaveClassName('ant-menu');
     });
   });
 
@@ -170,10 +170,10 @@ describe('Antd spec', function () {
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Modal visible={true}/>`());
-    //console.log(5, defaultWrapper1.html());
+    const wrapper = mount(nj`<ant-Modal visible={true}/>`());
+    //console.log(5, wrapper.html());
     it('its props visible equal to true', () => {
-      expect(defaultWrapper1.props().visible).toEqual(true);
+      expect(wrapper.props().visible).toEqual(true);
     });
   });
 
@@ -191,114 +191,114 @@ describe('Antd spec', function () {
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Pagination />`());
+    const wrapper = mount(nj`<ant-Pagination />`());
 
     it('should be ul tag with class name "ant-pagination" by default', () => {
-      expect(defaultWrapper1.find('ul').at(0)).toHaveClassName('ant-pagination');
+      expect(wrapper.find('ul').at(0)).toHaveClassName('ant-pagination');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Popover />`());
+    const wrapper = mount(nj`<ant-Popover />`());
 
     it('should be span tag by default', () => {
-      expect(defaultWrapper1.find('span').exists()).toBe(true);
+      expect(wrapper.find('span').exists()).toBe(true);
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = shallow(nj`<ant-Progress />`());
+    const wrapper = mount(nj`<ant-Progress />`());
 
     it('should be div tag by default', () => {
-      expect(defaultWrapper1).toHaveDisplayName('div');
+      expect(wrapper).toHaveDisplayName('Progress');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = shallow(nj`<ant-Radio />`());
+    const wrapper = mount(nj`<ant-Radio />`());
 
     it('should be label tag by default', () => {
-      expect(defaultWrapper1).toHaveDisplayName('label');
+      expect(wrapper).toHaveDisplayName('Radio');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Select />`());
+    const wrapper = mount(nj`<ant-Select />`());
 
     it('should be div tag with class name "ant-select" by default', () => {
-      expect(defaultWrapper1.find('div').at(0)).toHaveClassName('ant-select');
+      expect(wrapper.find('div').at(0)).toHaveClassName('ant-select');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Slider />`());
+    const wrapper = mount(nj`<ant-Slider />`());
 
     it('should be div tag with class name "ant-slider" by default', () => {
-      expect(defaultWrapper1.find('div').at(0)).toHaveClassName('ant-slider');
+      expect(wrapper.find('div').at(0)).toHaveClassName('ant-slider');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Switch />`());
+    const wrapper = mount(nj`<ant-Switch />`());
 
-    it('should be span tag with class name "ant-switch" by default', () => {
-      expect(defaultWrapper1.find('span').at(0)).toHaveClassName('ant-switch');
+    it('should be span tag with class name "ant-switch-inner" by default', () => {
+      expect(wrapper.find('span').at(0)).toHaveClassName('ant-switch-inner');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = shallow(nj`<ant-Table />`());
+    const wrapper = mount(nj`<ant-Table />`());
 
     it('should be div tag by default', () => {
-      expect(defaultWrapper1).toHaveDisplayName('div');
+      expect(wrapper).toHaveDisplayName('Table');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Tabs />`());
+    const wrapper = mount(nj`<ant-Tabs />`());
 
     it('should be div tag with class name "ant-tabs" by default', () => {
-      expect(defaultWrapper1.find('div').at(0)).toHaveClassName('ant-tabs');
+      expect(wrapper.find('div').at(0)).toHaveClassName('ant-tabs');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = shallow(nj`<ant-Tooltip />`());
+    const wrapper = mount(nj`<ant-Tooltip />`());
 
     it('should be span tag by default', () => {
-      expect(defaultWrapper1.find('span').exists()).toBe(true);
+      expect(wrapper.find('span').exists()).toBe(true);
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Transfer />`());
+    const wrapper = mount(nj`<ant-Transfer />`());
 
     it('should be div tag by default', () => {
-      expect(defaultWrapper1.find('div').at(0)).toHaveClassName('ant-transfer');
+      expect(wrapper.find('div').at(0)).toHaveClassName('ant-transfer');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-Tree />`());
+    const wrapper = mount(nj`<ant-Tree />`());
 
     it('should be ul tag with class name "ant-tree" by default', () => {
-      expect(defaultWrapper1.find('ul').at(0)).toHaveClassName('ant-tree');
+      expect(wrapper.find('ul').at(0)).toHaveClassName('ant-tree');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = mount(nj`<ant-TreeSelect />`());
+    const wrapper = mount(nj`<ant-TreeSelect />`());
 
     it('should be span tag with class name "ant-select" by default', () => {
-      expect(defaultWrapper1.find('span').at(0)).toHaveClassName('ant-select');
+      expect(wrapper.find('span').at(0)).toHaveClassName('ant-select');
     });
   });
 
   describe('default', () => {
-    const defaultWrapper1 = shallow(nj`<ant-Upload />`());
+    const wrapper = mount(nj`<ant-Upload />`());
 
     it('should be span tag by default', () => {
-      expect(defaultWrapper1).toHaveDisplayName('span');
+      expect(wrapper).toHaveDisplayName('Upload');
     });
   });
 });

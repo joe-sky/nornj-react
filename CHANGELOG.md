@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v5.0.0-rc.13] 2019.07.22
+
+* 🌟 Upgrade `antd` components to latest version.
+
 ## [v5.0.0-rc.4] 2019.05.05
 
 * 🌟 `n-mobxBind` support the native `multiple select`, `checkbox` and `radio`.
