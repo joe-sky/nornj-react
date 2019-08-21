@@ -12,7 +12,6 @@ const MobxBindWrap = React.forwardRef(({
     props: directiveProps
   },
   _mobxBindValue: value,
-  _mobxBindAction: action,
   ...props
 }, ref) => {
   let valuePropName = 'value',
@@ -39,7 +38,7 @@ const MobxBindWrap = React.forwardRef(({
   if (debounceArg) {
     const { modifiers } = debounceArg;
     emitChangeDebounced = useRef(debounce(args => {
-      changeEvent.apply($this, args);
+      changeEvent && changeEvent.apply($this, args);
     }, (modifiers && +modifiers[0]) || 100));
   }
 
@@ -66,7 +65,6 @@ const MobxBindWrap = React.forwardRef(({
         value,
         args: arguments,
         changeEvent,
-        action,
         valuePropName,
         emitChangeDebounced,
         isMultipleSelect,
@@ -81,7 +79,6 @@ const MobxBindWrap = React.forwardRef(({
         value,
         args: arguments,
         changeEvent,
-        action,
         valuePropName,
         emitChangeDebounced
       }, $this);
@@ -112,9 +109,11 @@ function _setValue(value, params, $this) {
     }
   }
 
-  if (params.action) {
-    params.value.source[`set${nj.capitalize(params.value.prop)}`](_value, params.args);
-  } else {
+  const setter = params.value.source[`set${nj.upperFirst(params.value.prop)}`];
+  if (setter) {
+    setter(_value, params.args);
+  }
+  else {
     params.value.source[params.value.prop] = _value;
   }
 
@@ -156,24 +155,6 @@ registerExtension('mobxBind', options => {
   tagProps.MobxBindTag = tagName;
   tagProps.mobxBindDirectiveOptions = options;
   tagProps._mobxBindValue = ret;
-  tagProps._mobxBindAction = _hasArg(props && props.arguments, 'action');
 }, extensionConfigs.mobxBind);
 
-registerExtension('mstBind', options => {
-  const ret = options.value();
-  if (ret == null) {
-    return ret;
-  }
-
-  const {
-    tagName,
-    setTagName,
-    tagProps
-  } = options;
-
-  setTagName(MobxBindWrap);
-  tagProps.MobxBindTag = tagName;
-  tagProps.mobxBindDirectiveOptions = options;
-  tagProps._mobxBindValue = ret;
-  tagProps._mobxBindAction = true;
-}, extensionConfigs.mstBind);
+nj.extensions.mstBind = nj.extensions.mobxBind;

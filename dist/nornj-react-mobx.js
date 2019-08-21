@@ -1,5 +1,5 @@
 /*!
-* NornJ-React-Mobx v5.0.0-rc.14
+* NornJ-React-Mobx v5.0.0-rc.15
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
@@ -111,8 +111,7 @@
         $this = _ref$mobxBindDirectiv.context.$this,
         directiveProps = _ref$mobxBindDirectiv.props,
         value = _ref._mobxBindValue,
-        action = _ref._mobxBindAction,
-        props = _objectWithoutProperties(_ref, ["MobxBindTag", "mobxBindDirectiveOptions", "_mobxBindValue", "_mobxBindAction"]);
+        props = _objectWithoutProperties(_ref, ["MobxBindTag", "mobxBindDirectiveOptions", "_mobxBindValue"]);
 
     var valuePropName = 'value',
         changeEventName = 'onChange';
@@ -142,7 +141,7 @@
     if (debounceArg) {
       var modifiers = debounceArg.modifiers;
       emitChangeDebounced = (0, _react.useRef)((0, _utils.debounce)(function (args) {
-        changeEvent.apply($this, args);
+        changeEvent && changeEvent.apply($this, args);
       }, modifiers && +modifiers[0] || 100));
     }
 
@@ -169,7 +168,6 @@
           value: value,
           args: arguments,
           changeEvent: changeEvent,
-          action: action,
           valuePropName: valuePropName,
           emitChangeDebounced: emitChangeDebounced,
           isMultipleSelect: isMultipleSelect,
@@ -184,7 +182,6 @@
           value: value,
           args: arguments,
           changeEvent: changeEvent,
-          action: action,
           valuePropName: valuePropName,
           emitChangeDebounced: emitChangeDebounced
         }, $this);
@@ -221,8 +218,10 @@
       }
     }
 
-    if (params.action) {
-      params.value.source["set".concat(_nornj.default.capitalize(params.value.prop))](_value, params.args);
+    var setter = params.value.source["set".concat(_nornj.default.upperFirst(params.value.prop))];
+
+    if (setter) {
+      setter(_value, params.args);
     } else {
       params.value.source[params.value.prop] = _value;
     }
@@ -262,24 +261,8 @@
     tagProps.MobxBindTag = tagName;
     tagProps.mobxBindDirectiveOptions = options;
     tagProps._mobxBindValue = ret;
-    tagProps._mobxBindAction = _hasArg(props && props.arguments, 'action');
   }, _extensionConfig.default.mobxBind);
-  (0, _nornj.registerExtension)('mstBind', function (options) {
-    var ret = options.value();
-
-    if (ret == null) {
-      return ret;
-    }
-
-    var tagName = options.tagName,
-        setTagName = options.setTagName,
-        tagProps = options.tagProps;
-    setTagName(MobxBindWrap);
-    tagProps.MobxBindTag = tagName;
-    tagProps.mobxBindDirectiveOptions = options;
-    tagProps._mobxBindValue = ret;
-    tagProps._mobxBindAction = true;
-  }, _extensionConfig.default.mstBind);
+  _nornj.default.extensions.mstBind = _nornj.default.extensions.mobxBind;
 
   var _nornj$1 = require("nornj");
 
