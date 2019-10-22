@@ -1,1 +1,1 @@
-import './src/typings/njr';
+import './typings/njr';
