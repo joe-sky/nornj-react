@@ -31,7 +31,6 @@ _global.NornJReact = _global.njr = njr;
 
 export {
   bindTemplate,
-  bindTemplate as bindTemplateName,
   bindTemplate as registerTmpl
 };
 export default njr;

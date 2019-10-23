@@ -1,5 +1,5 @@
 /*!
-* NornJ-React v5.0.0-rc.16
+* NornJ-React v5.0.0-rc.18
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
@@ -295,4 +295,4 @@ var _global = typeof self !== 'undefined' ? self : global;
 _global.NornJReact = _global.njr = njr;
 
 export default njr;
-export { bindTemplate, bindTemplate as bindTemplateName, bindTemplate as registerTmpl };
+export { bindTemplate, bindTemplate as registerTmpl };

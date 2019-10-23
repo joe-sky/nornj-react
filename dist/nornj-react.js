@@ -1,5 +1,5 @@
 /*!
-* NornJ-React v5.0.0-rc.16
+* NornJ-React v5.0.0-rc.18
 * (c) 2016-2019 Joe_Sky
 * Released under the MIT License.
 */
@@ -301,7 +301,6 @@
   _global.NornJReact = _global.njr = njr;
 
   exports.bindTemplate = bindTemplate;
-  exports.bindTemplateName = bindTemplate;
   exports.registerTmpl = bindTemplate;
   exports.default = njr;
 

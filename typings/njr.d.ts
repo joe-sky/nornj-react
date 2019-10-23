@@ -5,27 +5,17 @@ declare namespace NornJReact {
   /**
    * `njr.bindTemplate`, register React component to NornJ template.
    */
-  export function bindTemplate(): NornJ.Component;
+  export function bindTemplate<T extends React.ElementType>(target: T): T;
 
   /**
    * `njr.bindTemplate`, register React component to NornJ template.
    */
-  export function bindTemplate(name: string): Function;
-
-  /**
-   * [Deprecated]`njr.bindTemplateName`, register React component to NornJ template.
-   */
-  export function bindTemplateName(): NornJ.Component;
-
-  /**
-   * [Deprecated]`njr.bindTemplateName`, register React component to NornJ template.
-   */
-  export function bindTemplateName(name: string): Function;
+  export function bindTemplate(name: string): <T extends React.ElementType>(target: T) => T;
 
   /**
    * [Deprecated]`njr.registerTmpl`, register React component to NornJ template.
    */
-  export function registerTmpl(options: object): Function;
+  export function registerTmpl(name: string): <T extends React.ElementType>(target: T) => T;
 }
 
 declare module 'nornj-react' {
